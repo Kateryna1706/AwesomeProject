@@ -1,36 +1,99 @@
 import React from "react";
-import { SafeAreaView, StyleSheet, TextInput } from "react-native";
+import {
+  Button,
+  KeyboardAvoidingView,
+  StyleSheet,
+  TextInput,
+  View,
+  Text,
+  TouchableWithoutFeedback,
+} from "react-native";
 
 const LoginScreen = () => {
   const [email, onChangeEmail] = React.useState("Useless Text");
   const [password, onChangePassword] = React.useState("Useless Text");
 
   return (
-    <SafeAreaView>
-      <TextInput
-        style={styles.input}
-        onChangeText={onChangeEmail}
-        value={email}
-        placeholder="useless placeholder"
-        keyboardType="email-address"
-      />
-      <TextInput
-        style={styles.input}
-        onChangeText={onChangePassword}
-        value={password}
-        placeholder="useless placeholder"
-        keyboardType="visible-password"
-      />
-    </SafeAreaView>
+    <KeyboardAvoidingView keyboardVerticalOffset="-1">
+      <View style={styles.formContainer}>
+        <Text style={styles.header}>Увійти</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={onChangeEmail}
+          value={email}
+          placeholder="Адреса електронної пошти"
+          keyboardType="email-address"
+        />
+        <TextInput
+          style={styles.input}
+          onChangeText={onChangePassword}
+          value={password}
+          placeholder="Пароль"
+          keyboardType="visible-password"
+        />
+        <Button style={styles.button}>Увійти</Button>
+        <TouchableWithoutFeedback onPress={onPress} accessibilityRole="link">
+          <View style={styles.link}>
+            <Text>Немає акаунту? Зареєструватися</Text>
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
+  formContainer: {
+    height: 489,
+    padding: 16,
+    borderRadius: 25,
+    backgroundColor: `#ffffff`,
+  },
+  header: {
+    marginTop: 16,
+    marginBottom: 16,
+    textAlign: "center",
+    fontSize: 30,
+    fontWeight: 500,
+    lineHeight: 35,
+    FontFamily: "Roboto",
+  },
   input: {
-    height: 40,
-    margin: 12,
+    height: 50,
+    width: 343,
+    marginTop: 16,
     borderWidth: 1,
-    padding: 10,
+    borderColor: "#E8E8E8",
+    borderRadius: 5,
+    fontSize: 16,
+    fontWeight: 400,
+    lineHeight: 19,
+    FontFamily: "Roboto",
+
+    color: "#E8E8E8",
+    backgroundColor: "#F6F6F6",
+  },
+  button: {
+    height: 51,
+    width: 343,
+    marginTop: 43,
+    borderRadius: 100,
+
+    fontSize: 16,
+    fontWeight: 400,
+    lineHeight: 19,
+    textAlign: "center",
+    FontFamily: "Roboto",
+    backgroundColor: "#FF6C00",
+  },
+  link: {
+    fontSize: 16,
+    fontWeight: 400,
+    lineHeight: 19,
+    textAlign: "center",
+    FontFamily: "Roboto",
+    textDecorationStyle: "solid",
+    color: "#1B4371",
   },
 });
 
