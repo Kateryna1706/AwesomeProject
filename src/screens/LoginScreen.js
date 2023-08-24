@@ -7,6 +7,7 @@ import {
   View,
   Text,
   TouchableWithoutFeedback,
+  Pressable,
 } from "react-native";
 
 import { Formik } from "formik";
@@ -14,14 +15,22 @@ import { Formik } from "formik";
 const initialValues = { email: "", password: "" };
 
 const LoginScreen = () => {
+  
+  const onPress = () => {
+    console.log("bvjfj");
+  };
+
   return (
-    <KeyboardAvoidingView keyboardVerticalOffset="-1">
+    <KeyboardAvoidingView
+      keyboardVerticalOffset="-1"
+      style={styles.formContainer}
+    >
       <Formik
         initialValues={initialValues}
         onSubmit={(values) => console.log(values)}
       >
         {({ handleChange, handleSubmit, values }) => (
-          <View style={styles.formContainer}>
+          <View collapsable={false}>
             <Text style={styles.header}>Увійти</Text>
             <TextInput
               style={styles.input}
@@ -37,9 +46,9 @@ const LoginScreen = () => {
               placeholder="Пароль"
               keyboardType="visible-password"
             />
-            <Button onPress={handleSubmit} title="Submit" style={styles.button}>
-              Увійти
-            </Button>
+            <Pressable onPress={handleSubmit} style={styles.button}>
+              <Text style={styles.text}>Увійти</Text>
+            </Pressable>
           </View>
         )}
       </Formik>
@@ -54,6 +63,9 @@ const LoginScreen = () => {
 
 const styles = StyleSheet.create({
   formContainer: {
+    position: "absolute",
+    left: 0,
+    bottom: 0,
     height: 489,
     padding: 16,
     borderRadius: 25,
@@ -64,7 +76,6 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     textAlign: "center",
     fontSize: 30,
-    fontWeight: 500,
     lineHeight: 35,
     FontFamily: "Roboto",
   },
@@ -72,36 +83,39 @@ const styles = StyleSheet.create({
     height: 50,
     width: 343,
     marginTop: 16,
+    padding: 16,
     borderWidth: 1,
     borderColor: "#E8E8E8",
     borderRadius: 5,
     fontSize: 16,
-    fontWeight: 400,
     lineHeight: 19,
-    FontFamily: "Roboto",
-
-    color: "#E8E8E8",
+    fontFamily: "Roboto",
     backgroundColor: "#F6F6F6",
   },
   button: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     height: 51,
     width: 343,
     marginTop: 43,
     borderRadius: 100,
 
-    fontSize: 16,
-    fontWeight: 400,
-    lineHeight: 19,
-    textAlign: "center",
-    FontFamily: "Roboto",
     backgroundColor: "#FF6C00",
   },
-  link: {
+  text: {
     fontSize: 16,
-    fontWeight: 400,
     lineHeight: 19,
     textAlign: "center",
-    FontFamily: "Roboto",
+    fontFamily: "Roboto",
+    color: "#ffffff",
+  },
+  link: {
+    marginTop: 16,
+    fontSize: 16,
+    lineHeight: 19,
+    textAlign: "center",
+    fontFamily: "Roboto",
     textDecorationStyle: "solid",
     color: "#1B4371",
   },
