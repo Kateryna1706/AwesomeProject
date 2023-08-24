@@ -9,44 +9,51 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 
+import { Formik } from "formik";
+
+const initialValues = { name: "", email: "", password: "" };
+
 const RegistrationScreen = () => {
-  const [text, onChangeText] = React.useState("Useless Text");
-  const [email, onChangeEmail] = React.useState("Useless Text");
-  const [password, onChangePassword] = React.useState("Useless Text");
-
-  // const onPress = (PressEvent) => {};
-
   return (
     <KeyboardAvoidingView keyboardVerticalOffset="-1">
-      <View style={styles.formContainer}>
-        <Text style={styles.header}>Реєстрація</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={onChangeText}
-          value={text}
-          placeholder="Логін"
-        />
-        <TextInput
-          style={styles.input}
-          onChangeText={onChangeEmail}
-          value={email}
-          placeholder="Адреса електронної пошти"
-          keyboardType="email-address"
-        />
-        <TextInput
-          style={styles.input}
-          onChangeText={onChangePassword}
-          value={password}
-          placeholder="Пароль"
-          keyboardType="visible-password"
-        />
-        <Button style={styles.button}>Зареєстуватися</Button>
-        <TouchableWithoutFeedback onPress={onPress} accessibilityRole="link">
-          <View style={styles.link}>
-            <Text>Вже є акаунт? Увійти</Text>
+      <Formik
+        initialValues={initialValues}
+        onSubmit={(values) => console.log(values)}
+      >
+        {({ handleChange, handleSubmit, values }) => (
+          <View style={styles.formContainer}>
+            <Text style={styles.header}>Реєстрація</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={handleChange("name")}
+              value={values.name}
+              placeholder="Логін"
+            />
+            <TextInput
+              style={styles.input}
+              onChangeText={handleChange("email")}
+              value={values.email}
+              placeholder="Адреса електронної пошти"
+              keyboardType="email-address"
+            />
+            <TextInput
+              style={styles.input}
+              onChangeText={handleChange("password")}
+              value={values.password}
+              placeholder="Пароль"
+              keyboardType="visible-password"
+            />
+            <Button onPress={handleSubmit} title="Submit" style={styles.button}>
+              Зареєстуватися
+            </Button>
           </View>
-        </TouchableWithoutFeedback>
-      </View>
+        )}
+      </Formik>
+      <TouchableWithoutFeedback onPress={onPress} accessibilityRole="link">
+        <View style={styles.link}>
+          <Text>Вже є акаунт? Увійти</Text>
+        </View>
+      </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
 };
@@ -72,7 +79,6 @@ const styles = StyleSheet.create({
     width: 343,
     marginTop: 16,
     borderWidth: 1,
-    // borderStyle: "solid",
     borderColor: "#E8E8E8",
     borderRadius: 5,
     fontSize: 16,

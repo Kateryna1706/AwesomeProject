@@ -1,6 +1,6 @@
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
-import RegistrationScreen from "RegistrationScreen";
+import RegistrationScreen from "./RegistrationScreen.js";
 
 const background = require("./images/background.jpg");
 

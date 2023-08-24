@@ -9,35 +9,45 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 
-const LoginScreen = () => {
-  const [email, onChangeEmail] = React.useState("Useless Text");
-  const [password, onChangePassword] = React.useState("Useless Text");
+import { Formik } from "formik";
 
+const initialValues = { email: "", password: "" };
+
+const LoginScreen = () => {
   return (
     <KeyboardAvoidingView keyboardVerticalOffset="-1">
-      <View style={styles.formContainer}>
-        <Text style={styles.header}>Увійти</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={onChangeEmail}
-          value={email}
-          placeholder="Адреса електронної пошти"
-          keyboardType="email-address"
-        />
-        <TextInput
-          style={styles.input}
-          onChangeText={onChangePassword}
-          value={password}
-          placeholder="Пароль"
-          keyboardType="visible-password"
-        />
-        <Button style={styles.button}>Увійти</Button>
-        <TouchableWithoutFeedback onPress={onPress} accessibilityRole="link">
-          <View style={styles.link}>
-            <Text>Немає акаунту? Зареєструватися</Text>
+      <Formik
+        initialValues={initialValues}
+        onSubmit={(values) => console.log(values)}
+      >
+        {({ handleChange, handleSubmit, values }) => (
+          <View style={styles.formContainer}>
+            <Text style={styles.header}>Увійти</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={handleChange("email")}
+              value={values.email}
+              placeholder="Адреса електронної пошти"
+              keyboardType="email-address"
+            />
+            <TextInput
+              style={styles.input}
+              onChangeText={handleChange("password")}
+              value={values.password}
+              placeholder="Пароль"
+              keyboardType="visible-password"
+            />
+            <Button onPress={handleSubmit} title="Submit" style={styles.button}>
+              Увійти
+            </Button>
           </View>
-        </TouchableWithoutFeedback>
-      </View>
+        )}
+      </Formik>
+      <TouchableWithoutFeedback onPress={onPress} accessibilityRole="link">
+        <View style={styles.link}>
+          <Text>Немає акаунту? Зареєструватися</Text>
+        </View>
+      </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
 };
