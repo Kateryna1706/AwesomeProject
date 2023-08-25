@@ -15,7 +15,6 @@ import { Formik } from "formik";
 const initialValues = { email: "", password: "" };
 
 const LoginScreen = () => {
-  
   const onPress = () => {
     console.log("bvjfj");
   };
@@ -46,6 +45,7 @@ const LoginScreen = () => {
               placeholder="Пароль"
               keyboardType="visible-password"
             />
+            <Text style={styles.textInput}>Показати</Text>
             <Pressable onPress={handleSubmit} style={styles.button}>
               <Text style={styles.text}>Увійти</Text>
             </Pressable>
@@ -53,9 +53,7 @@ const LoginScreen = () => {
         )}
       </Formik>
       <TouchableWithoutFeedback onPress={onPress} accessibilityRole="link">
-        <View style={styles.link}>
-          <Text>Немає акаунту? Зареєструватися</Text>
-        </View>
+        <Text style={styles.link}>Немає акаунту? Зареєструватися</Text>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
@@ -77,7 +75,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 30,
     lineHeight: 35,
-    FontFamily: "Roboto",
+    fontFamily: "Roboto",
   },
   input: {
     height: 50,
@@ -91,6 +89,14 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     fontFamily: "Roboto",
     backgroundColor: "#F6F6F6",
+  },
+  textInput: {
+    position: "absolute",
+    right: 28,
+    top: 167,
+    fontSize: 16,
+    lineHeight: 19,
+    color: "#1B4371",
   },
   button: {
     display: "flex",

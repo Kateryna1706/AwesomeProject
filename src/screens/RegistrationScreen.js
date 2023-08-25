@@ -10,9 +10,7 @@ import {
   Image,
 } from "react-native";
 
-import Svg, { Circle } from "react-native-svg";
-
-// import { AntDesign } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 
 const photo = require("../images/photoProfile.jpg");
 
@@ -30,36 +28,15 @@ const RegistrationScreen = () => {
       keyboardVerticalOffset="-1"
       style={styles.formContainer}
     >
-      <View style={styles.photoProfile}>
-        <Image source={photo} />
+      <View style={styles.containerPhoto}>
+        <Image source={photo} style={styles.photoProfile} />
         <Pressable onPress={onPress}>
-          <Svg
-            height="25"
-            width="25"
-            viewBox="0 0 100 100"
-            slyle={styles.button}
-          >
-            <Circle
-              cx="50"
-              cy="50"
-              r="50"
-              stroke="#BDBDBD"
-              strokeWidth="1"
-              fill="#E8E8E8"
-            />
-          </Svg>
-          {/* <Image
-            source={require("../images/cross.svg")}
-            fadeDuration={0}
-            slyle={styles.button}
-          /> */}
-          {/* <AntDesign
+          <AntDesign
             name="closecircleo"
             size={25}
             color="#BDBDBD"
-            onPress={onPress}
-
-          /> */}
+            style={styles.button}
+          />
         </Pressable>
       </View>
       <Formik
@@ -89,10 +66,10 @@ const RegistrationScreen = () => {
               placeholder="Пароль"
               keyboardType="visible-password"
             />
+            <Text style={styles.textInput}>Показати</Text>
             <Pressable onPress={handleSubmit} style={styles.buttonSubmit}>
               <Text style={styles.text}>Зареєстуватися</Text>
             </Pressable>
-
             <TouchableWithoutFeedback
               onPress={onPress}
               accessibilityRole="link"
@@ -116,7 +93,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     backgroundColor: `#ffffff`,
   },
-  photoProfile: {
+  containerPhoto: {
     position: "absolute",
     top: -60,
     left: 128,
@@ -126,23 +103,15 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     backgroundColor: "#F6F6F6",
   },
+  photoProfile: {
+    borderRadius: 16,
+  },
   button: {
     position: "absolute",
     right: -12,
     bottom: 10,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    height: 25,
-    width: 25,
-    padding: 8,
     borderRadius: 50,
-    borderColor: "#BDBDBD",
-    borderWidth: 1,
-    textAlign: "center",
-    color: "#BDBDBD",
-
-    backgroundColor: "#fff",
+    backgroundColor: "#E8E8E8",
   },
   header: {
     marginTop: 76,
@@ -164,6 +133,14 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     fontFamily: "Roboto",
     backgroundColor: "#F6F6F6",
+  },
+  textInput: {
+    position: "absolute",
+    right: 30,
+    top: 292,
+    fontSize: 16,
+    lineHeight: 19,
+    color: "#1B4371",
   },
   buttonSubmit: {
     display: "flex",
