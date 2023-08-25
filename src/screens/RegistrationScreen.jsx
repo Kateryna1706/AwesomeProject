@@ -88,8 +88,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 0,
     bottom: 0,
-    height: 549,
     padding: 16,
+    paddingBottom: 45,
     borderRadius: 25,
     backgroundColor: `#ffffff`,
   },
@@ -123,7 +123,6 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 50,
-    width: 343,
     marginTop: 16,
     padding: 16,
     borderWidth: 1,
