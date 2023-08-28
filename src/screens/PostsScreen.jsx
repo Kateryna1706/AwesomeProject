@@ -11,7 +11,7 @@ const PostsScreen = () => {
       source={Background}
       resizeMode="cover"
       resizeMethod="resize"
-      imageStyle={styles.imageBackground}
+      style={styles.imageBackground}
     >
       <RegistrationScreen />
       {/* <LoginScreen /> */}
@@ -22,8 +22,6 @@ const PostsScreen = () => {
 const styles = StyleSheet.create({
   imageBackground: {
     flex: 1,
-    justifyContent: "flex-end",
-    alignItems: "center",
   },
 });
 

@@ -12,7 +12,7 @@ export default function App() {
   }
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <PostsScreen />
     </View>
   );

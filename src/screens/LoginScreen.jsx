@@ -23,11 +23,11 @@ const LoginScreen = () => {
 
   return (
     <KeyboardAvoidingView
-      keyboardVerticalOffset={-1}
+      keyboardVerticalOffset={-131}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.formContainer}
+      style={styles.keyboardContainer}
     >
-      <View>
+      <View style={styles.formContainer}>
         <Text style={styles.header}>Увійти</Text>
 
         <TextInput
@@ -79,11 +79,15 @@ const LoginScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  keyboardContainer: {
+    flex: 1,
+    justifyContent: "flex-end",
+  },
   formContainer: {
-    top: 279,
     padding: 16,
     paddingBottom: 111,
-    borderRadius: 25,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
     backgroundColor: `#ffffff`,
   },
   header: {
@@ -95,7 +99,6 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto",
   },
   input: {
-    height: 50,
     marginTop: 16,
     padding: 16,
     borderWidth: 1,
@@ -118,11 +121,12 @@ const styles = StyleSheet.create({
     color: "#1B4371",
   },
   button: {
-    display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    height: 51,
-    width: 343,
+    paddingTop: 16,
+    paddingBottom: 16,
+    paddingRight: 145,
+    paddingLeft: 145,
     marginTop: 43,
     borderRadius: 100,
 

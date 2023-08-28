@@ -30,18 +30,18 @@ const RegistrationScreen = () => {
 
   return (
     <KeyboardAvoidingView
-      keyboardVerticalOffset={-1}
+      keyboardVerticalOffset={-131}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.formContainer}
+      style={styles.keyboardContainer}
     >
-      <View style={styles.containerPhoto}>
-        <Image source={photo} style={styles.photoProfile} />
-        <Pressable onPress={onPress} style={styles.button}>
-          <AntDesign name="closecircleo" size={25} color="#BDBDBD" />
-        </Pressable>
-      </View>
+      <View style={styles.formContainer}>
+        <View style={styles.containerPhoto}>
+          <Image source={photo} style={styles.photoProfile} />
+          <Pressable onPress={onPress} style={styles.button}>
+            <AntDesign name="closecircleo" size={25} color="#BDBDBD" />
+          </Pressable>
+        </View>
 
-      <View>
         <Text style={styles.header}>Реєстрація</Text>
         <TextInput
           style={[styles.input, isFocusLogin && styles.isFocus]}
@@ -100,15 +100,19 @@ const RegistrationScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  keyboardContainer: {
+    flex: 1,
+    justifyContent: "flex-end",
+  },
   formContainer: {
-    top: 219,
     padding: 16,
-    paddingBottom: 45,
-    borderRadius: 25,
+    paddingTop: 0,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
     backgroundColor: `#ffffff`,
   },
   containerPhoto: {
-    top: -80,
+    top: -60,
     alignSelf: "center",
     width: 120,
     height: 120,
@@ -126,7 +130,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#E8E8E8",
   },
   header: {
-    // marginTop: 32,
     marginBottom: 16,
     textAlign: "center",
     fontSize: 30,
@@ -134,7 +137,6 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto",
   },
   input: {
-    height: 50,
     marginTop: 16,
     padding: 16,
     borderWidth: 1,
@@ -159,8 +161,10 @@ const styles = StyleSheet.create({
   buttonSubmit: {
     justifyContent: "center",
     alignItems: "center",
-    height: 51,
-    width: 343,
+    paddingTop: 16,
+    paddingBottom: 16,
+    paddingRight: 109,
+    paddingLeft: 109,
     marginTop: 43,
     borderRadius: 100,
 
