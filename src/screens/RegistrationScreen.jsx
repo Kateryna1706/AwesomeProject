@@ -68,7 +68,7 @@ const RegistrationScreen = () => {
           onChangeText={setPassword}
           value={password}
           placeholder="Пароль"
-          keyboardType="visible-password"
+          secureTextEntry={secureTextEntry}
           onFocus={() => setIsFocusPassword(true)}
           onBlur={() => setIsFocusPassword(false)}
         />
@@ -150,9 +150,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
   },
   textInput: {
-    position: "absolute",
-    right: 30,
-    top: 292,
+    left: 250,
+    top: -37,
     fontSize: 16,
     lineHeight: 19,
     color: "#1B4371",

@@ -111,9 +111,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
   },
   textInput: {
-    position: "absolute",
-    right: 28,
-    top: 167,
+    left: 250,
+    top: -37,
     fontSize: 16,
     lineHeight: 19,
     color: "#1B4371",
