@@ -1,24 +1,29 @@
 import React from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { ImageBackground, StyleSheet } from "react-native";
 import RegistrationScreen from "./RegistrationScreen";
 // import LoginScreen from "./LoginScreen";
 
-const background = require("../images/background.jpg");
+import Background from "../images/background.jpg";
 
 const PostsScreen = () => {
   return (
-    <View collapsable={false} style={styles.container}>
-      <Image source={background} />
-      {/* <LoginScreen /> */}
+    <ImageBackground
+      source={Background}
+      resizeMode="cover"
+      resizeMethod="resize"
+      imageStyle={styles.imageBackground}
+    >
       <RegistrationScreen />
-    </View>
+      {/* <LoginScreen /> */}
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    display: "flex",
-    width: 375,
+  imageBackground: {
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "center",
   },
 });
 

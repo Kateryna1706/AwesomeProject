@@ -1,69 +1,86 @@
-import React from "react";
+import React, { useState } from "react";
 import {
-  Button,
-  KeyboardAvoidingView,
   StyleSheet,
   TextInput,
-  View,
   Text,
-  TouchableWithoutFeedback,
+  View,
+  KeyboardAvoidingView,
   Pressable,
+  TouchableOpacity,
 } from "react-native";
 
-import { Formik } from "formik";
-
-const initialValues = { email: "", password: "" };
-
 const LoginScreen = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isFocusEmail, setIsFocusEmail] = useState(false);
+  const [isFocusPassword, setIsFocusPassword] = useState(false);
+  const [isButtonPress, setIsButtonPress] = useState(false);
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
+
   const onPress = () => {
-    console.log("bvjfj");
+    console.log("ncndj");
   };
 
   return (
     <KeyboardAvoidingView
-      keyboardVerticalOffset="-1"
+      keyboardVerticalOffset={-1}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.formContainer}
     >
-      <Formik
-        initialValues={initialValues}
-        onSubmit={(values) => console.log(values)}
-      >
-        {({ handleChange, handleSubmit, values }) => (
-          <View collapsable={false}>
-            <Text style={styles.header}>Увійти</Text>
-            <TextInput
-              style={styles.input}
-              onChangeText={handleChange("email")}
-              value={values.email}
-              placeholder="Адреса електронної пошти"
-              keyboardType="email-address"
-            />
-            <TextInput
-              style={styles.input}
-              onChangeText={handleChange("password")}
-              value={values.password}
-              placeholder="Пароль"
-              keyboardType="visible-password"
-            />
-            <Text style={styles.textInput}>Показати</Text>
-            <Pressable onPress={handleSubmit} style={styles.button}>
-              <Text style={styles.text}>Увійти</Text>
-            </Pressable>
-          </View>
-        )}
-      </Formik>
-      <TouchableWithoutFeedback onPress={onPress} accessibilityRole="link">
-        <Text style={styles.link}>Немає акаунту? Зареєструватися</Text>
-      </TouchableWithoutFeedback>
+      <View>
+        <Text style={styles.header}>Увійти</Text>
+
+        <TextInput
+          style={[styles.input, isFocusEmail && styles.isFocus]}
+          autoCapitalize="none"
+          onChangeText={setEmail}
+          value={email}
+          placeholder="Адреса електронної пошти"
+          keyboardType="email-address"
+          onFocus={() => setIsFocusEmail(true)}
+          onBlur={() => setIsFocusEmail(false)}
+        />
+        <TextInput
+          style={[styles.input, isFocusPassword && styles.isFocus]}
+          autoCapitalize="none"
+          onChangeText={setPassword}
+          value={password}
+          placeholder="Пароль"
+          secureTextEntry={secureTextEntry}
+          onFocus={() => setIsFocusPassword(true)}
+          onBlur={() => setIsFocusPassword(false)}
+        />
+        <Pressable
+          style={styles.textInput}
+          onPress={() => {
+            setSecureTextEntry(!secureTextEntry);
+          }}
+        >
+          <Text>{secureTextEntry ? "Показати" : "Приховати"}</Text>
+        </Pressable>
+
+        <Pressable
+          style={[styles.button, isButtonPress && styles.isButtonPress]}
+          onPressIn={() => {
+            setIsButtonPress(true);
+          }}
+          onPressOut={() => {
+            setIsButtonPress(false);
+          }}
+        >
+          <Text style={styles.text}>Увійти</Text>
+        </Pressable>
+        <TouchableOpacity onPress={onPress}>
+          <Text style={styles.link}>Немає акаунту? Зареєструватися</Text>
+        </TouchableOpacity>
+      </View>
     </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   formContainer: {
-    position: "absolute",
-    left: 0,
-    bottom: 0,
+    top: 279,
     padding: 16,
     paddingBottom: 111,
     borderRadius: 25,
@@ -89,6 +106,10 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto",
     backgroundColor: "#F6F6F6",
   },
+  isFocus: {
+    borderColor: "#FF6C00",
+    backgroundColor: "#FFFFFF",
+  },
   textInput: {
     position: "absolute",
     right: 28,
@@ -107,6 +128,9 @@ const styles = StyleSheet.create({
     borderRadius: 100,
 
     backgroundColor: "#FF6C00",
+  },
+  isButtonPress: {
+    backgroundColor: "#ff5500",
   },
   text: {
     fontSize: 16,
