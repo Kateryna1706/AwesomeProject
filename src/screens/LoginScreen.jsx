@@ -11,8 +11,9 @@ import {
   Keyboard,
   Platform,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isFocusEmail, setIsFocusEmail] = useState(false);
@@ -20,9 +21,7 @@ const LoginScreen = () => {
   const [isButtonPress, setIsButtonPress] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
-  const onPress = () => {
-    console.log("ncndj");
-  };
+  const navigation = useNavigation();
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -81,7 +80,9 @@ const LoginScreen = () => {
           >
             <Text style={styles.text}>Увійти</Text>
           </Pressable>
-          <TouchableOpacity onPress={onPress}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("RegistrationScreen")}
+          >
             <Text style={styles.link}>Немає акаунту? Зареєструватися</Text>
           </TouchableOpacity>
         </View>
