@@ -1,27 +1,56 @@
 import React from "react";
-import { ImageBackground, StyleSheet } from "react-native";
-import RegistrationScreen from "./RegistrationScreen";
-// import LoginScreen from "./LoginScreen";
-
-import Background from "../images/background.jpg";
+import { Image, StyleSheet, Text, View } from "react-native";
+// import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const PostsScreen = () => {
   return (
-    <ImageBackground
-      source={Background}
-      resizeMode="cover"
-      resizeMethod="resize"
-      style={styles.imageBackground}
-    >
-      <RegistrationScreen />
-      {/* <LoginScreen /> */}
-    </ImageBackground>
+    <View style={styles.container}>
+      <View style={styles.containerPost}>
+        <View style={styles.containerPhoto}>
+          <Image
+            source={require("../images/photoProfile.jpg")}
+            style={styles.photo}
+          />
+        </View>
+        <View>
+          <Text style={styles.name}>Natali Romanova</Text>
+          <Text style={{ fontSize: 11, color: "#212121" }}>
+            email@example.com
+          </Text>
+        </View>
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  imageBackground: {
+  container: {
     flex: 1,
+    justifyContent: "flex-start",
+    paddingRight: 16,
+    paddingLeft: 16,
+    paddingTop: 32,
+    backgroundColor: "#FFFFFF",
+  },
+  containerPost: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  containerPhoto: {
+    width: 60,
+    height: 60,
+    marginRight: 8,
+    borderRadius: 16,
+  },
+  photo: {
+    width: 60,
+    height: 60,
+    borderRadius: 16,
+  },
+  name: {
+    fontWeight: "bold",
+    fontSize: 13,
+    color: "#212121",
   },
 });
 

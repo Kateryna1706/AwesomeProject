@@ -13,12 +13,11 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
 import { AntDesign } from "@expo/vector-icons";
 
 const photo = require("../images/photoProfile.jpg");
 
-const RegistrationScreen = ({ navigation }) => {
+const RegistrationScreen = () => {
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,6 +28,18 @@ const RegistrationScreen = ({ navigation }) => {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
   const navigation = useNavigation();
+
+  const onPress = () => {
+    console.log("onPress");
+  };
+
+  const handleSubmit = () => {
+    console.log({ login, email, password });
+    setLogin("");
+    setEmail("");
+    setPassword("");
+    navigation.navigate("Home");
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -93,12 +104,7 @@ const RegistrationScreen = ({ navigation }) => {
             onPressOut={() => {
               setIsButtonPress(false);
             }}
-            onPress={() => {
-              console.log({ login, email, password });
-              setLogin("");
-              setEmail("");
-              setPassword("");
-            }}
+            onPress={handleSubmit}
           >
             <Text style={styles.text}>Зареєстуватися</Text>
           </Pressable>

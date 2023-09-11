@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isFocusEmail, setIsFocusEmail] = useState(false);
@@ -22,6 +22,13 @@ const LoginScreen = ({ navigation }) => {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
   const navigation = useNavigation();
+
+  const handleSubmit = () => {
+    console.log({ email, password });
+    setEmail("");
+    setPassword("");
+    navigation.navigate("Home");
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -72,11 +79,7 @@ const LoginScreen = ({ navigation }) => {
             onPressOut={() => {
               setIsButtonPress(false);
             }}
-            onPress={() => {
-              console.log({ email, password });
-              setEmail("");
-              setPassword("");
-            }}
+            onPress={handleSubmit}
           >
             <Text style={styles.text}>Увійти</Text>
           </Pressable>
