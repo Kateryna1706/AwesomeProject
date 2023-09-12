@@ -15,10 +15,24 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-const photoPost = require("../images/photoPost.jpg");
+const photoPostFirst = require("../images/photoPostCommentFirst.jpg");
+const photoPostSecond = require("../images/photoPostCommentSecond.jpg");
 
 const CreatePostsScreen = () => {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState([
+    {
+      postPhoto: photoPostFirst,
+      postTitle: "Ліс",
+      location: "Ivano-Frankivs'k Region, Ukraine",
+      comments: [],
+    },
+    {
+      postPhoto: photoPostSecond,
+      postTitle: "Захід сонця",
+      location: "Ivano-Frankivs'k Region, Ukraine",
+      comments: [],
+    },
+  ]);
   const [postTitle, setPostTitle] = useState("");
   const [postPhoto, setPostPhoto] = useState(photoPost);
   const [location, setLocation] = useState("");
@@ -39,7 +53,7 @@ const CreatePostsScreen = () => {
     };
     const allPosts = [newPost, ...posts];
     setPosts(allPosts);
-    navigation.navigate("PostsScreen", { posts });
+    navigation.navigate("PostsScreen", { posts: posts });
   };
 
   return (

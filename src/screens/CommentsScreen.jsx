@@ -11,28 +11,27 @@ import {
   TextInput,
   FlatList,
 } from "react-native";
+import { useRoute } from "@react-navigation/native";
 
 const photoPostComment = require("../images/photoPostComment.jpg");
 
-const Item = ({ comments }) => {
+const Item = ({ comment }) => {
   return (
-    <>
-      {comments.map((comment) => (
-        <View style={styles.containerForComment}>
-          <View style={styles.profileIcon}>
-            <Image source={comment.iconProfile} />
-          </View>
-          <Text style={styles.textComment}>{comment.text}</Text>
-          <Text>{comment.dateCreate}</Text>
-        </View>
-      ))}
-    </>
+    <View style={styles.containerForComment}>
+      <View style={styles.profileIcon}>
+        <Image source={comment.iconProfile} />
+      </View>
+      <Text style={styles.textComment}>{comment.text}</Text>
+      <Text>{comment.dateCreate}</Text>
+    </View>
   );
 };
 
 const CommentsScreen = () => {
-  const [comments, setComments] = useState([]);
+  // const [comments, setComments] = useState([]);
   const [isFocusComment, setIsFocusComment] = useState(false);
+
+  const route = useRoute();
 
   const handleComment = (text) => {
     const comment = {
@@ -59,8 +58,8 @@ const CommentsScreen = () => {
           ></Image>
         </View>
         <FlatList
-          data={comments}
-          renderItem={(comments) => <Item comments={comments} />}
+          data={route.params.comments}
+          renderItem={(comment) => <Item comment={comment} />}
           keyExtractor={(item) => item.id}
           style={{ gap: 24 }}
         ></FlatList>

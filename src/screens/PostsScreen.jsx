@@ -1,12 +1,10 @@
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { FlatList, Image, StyleSheet, Text, View } from "react-native";
 import Post from "./Post";
 import { useRoute } from "@react-navigation/native";
 
 const PostsScreen = () => {
-  const {
-    params: { posts },
-  } = useRoute();
+  const route = useRoute();
 
   return (
     <View style={styles.container}>
@@ -25,10 +23,9 @@ const PostsScreen = () => {
         </View>
       </View>
       <FlatList
-        data={posts}
-        renderItem={(posts) => <Post posts={posts} />}
+        data={route.params.posts}
+        renderItem={(post) => <Post post={post} />}
         keyExtractor={(item) => item.id}
-        style={{ gap: 24 }}
       ></FlatList>
     </View>
   );
