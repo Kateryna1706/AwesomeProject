@@ -27,7 +27,7 @@ const LoginScreen = () => {
     console.log({ email, password });
     setEmail("");
     setPassword("");
-    navigation.navigate("Home");
+    navigation.navigate("BottomNavіgator");
   };
 
   return (

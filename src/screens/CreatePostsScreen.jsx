@@ -12,17 +12,34 @@ import {
   View,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 const photoPost = require("../images/photoPost.jpg");
 
 const CreatePostsScreen = () => {
+  const [posts, setPosts] = useState([]);
   const [postTitle, setPostTitle] = useState("");
+  const [postPhoto, setPostPhoto] = useState(photoPost);
   const [location, setLocation] = useState("");
   const [isFocusPostTitle, setIsFocusPostTitle] = useState(false);
   const [isFocusLocation, setIsFocusLocation] = useState(false);
+  const navigation = useNavigation();
 
   const onPress = () => {
     console.log("onPress");
+  };
+
+  const createPost = () => {
+    const newPost = {
+      postPhoto,
+      postTitle,
+      location,
+      comments: [],
+    };
+    const allPosts = [newPost, ...posts];
+    setPosts(allPosts);
+    navigation.navigate("PostsScreen", { posts });
   };
 
   return (
@@ -32,36 +49,41 @@ const CreatePostsScreen = () => {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardContainer}
       >
-        <View style={styles.containerPost}>
-          {/* <Image source={photoPost} style={styles.photoPost}></Image> */}
-          <Pressable onPress={onPress} style={styles.iconPost}>
-            <MaterialIcons name="photo-camera" size={24} color="#BDBDBD" />
-          </Pressable>
+        <View>
+          <View style={styles.containerPost}>
+            {/* <Image source={photoPost} style={styles.photoPost}></Image> */}
+            <Pressable onPress={onPress} style={styles.iconPost}>
+              <MaterialIcons name="photo-camera" size={24} color="#BDBDBD" />
+            </Pressable>
+          </View>
+          <Text style={styles.textPhoto}>Завантажте фото</Text>
+          <View style={styles.formContainer}>
+            <TextInput
+              style={[styles.input, isFocusPostTitle && styles.isFocus]}
+              autoCapitalize="none"
+              onChangeText={setPostTitle}
+              value={postTitle}
+              placeholder="Назва..."
+              onFocus={() => setIsFocusPostTitle(true)}
+              onBlur={() => setIsFocusPostTitle(false)}
+            />
+            <TextInput
+              style={[styles.input, isFocusLocation && styles.isFocus]}
+              autoCapitalize="none"
+              onChangeText={setLocation}
+              value={location}
+              placeholder="Місцевість..."
+              onFocus={() => setIsFocusLocation(true)}
+              onBlur={() => setIsFocusLocation(false)}
+            />
+            <Pressable style={styles.buttonSubmit} onPress={createPost}>
+              <Text style={styles.textButton}>Опубліковати</Text>
+            </Pressable>
+          </View>
         </View>
-        <Text style={styles.textPhoto}>Завантажте фото</Text>
-        <View style={styles.formContainer}>
-          <TextInput
-            style={[styles.input, isFocusPostTitle && styles.isFocus]}
-            autoCapitalize="none"
-            onChangeText={setPostTitle}
-            value={postTitle}
-            placeholder="Назва..."
-            onFocus={() => setIsFocusPostTitle(true)}
-            onBlur={() => setIsFocusPostTitle(false)}
-          />
-          <TextInput
-            style={[styles.input, isFocusLocation && styles.isFocus]}
-            autoCapitalize="none"
-            onChangeText={setLocation}
-            value={location}
-            placeholder="Місцевість..."
-            onFocus={() => setIsFocusLocation(true)}
-            onBlur={() => setIsFocusLocation(false)}
-          />
-          <Pressable style={styles.buttonSubmit}>
-            <Text style={styles.textButton}>Опубліковати</Text>
-          </Pressable>
-        </View>
+        <Pressable style={styles.buttonTrash}>
+          <Ionicons name="trash-outline" size={24} color="#BDBDBD" />
+        </Pressable>
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
@@ -70,20 +92,19 @@ const CreatePostsScreen = () => {
 const styles = StyleSheet.create({
   keyboardContainer: {
     flex: 1,
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
     paddingTop: 32,
+    paddingBottom: 32,
     paddingRight: 16,
     paddingLeft: 16,
     backgroundColor: "#ffffff",
   },
   containerPost: {
-    width: 343,
     height: 240,
     borderRadius: 8,
     backgroundColor: "#F6F6F6",
   },
   photoPost: {
-    width: 343,
     height: 240,
     borderRadius: 8,
   },
@@ -138,6 +159,17 @@ const styles = StyleSheet.create({
   isFocus: {
     borderColor: "#FF6C00",
     backgroundColor: "#FFFFFF",
+  },
+  buttonTrash: {
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 23,
+    paddingRight: 23,
+    borderRadius: 20,
+    backgroundColor: "#F6F6F6",
   },
 });
 

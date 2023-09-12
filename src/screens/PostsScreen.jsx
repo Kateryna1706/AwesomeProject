@@ -1,8 +1,13 @@
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
-// import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Post from "./Post";
+import { useRoute } from "@react-navigation/native";
 
 const PostsScreen = () => {
+  const {
+    params: { posts },
+  } = useRoute();
+
   return (
     <View style={styles.container}>
       <View style={styles.containerPost}>
@@ -19,6 +24,12 @@ const PostsScreen = () => {
           </Text>
         </View>
       </View>
+      <FlatList
+        data={posts}
+        renderItem={(posts) => <Post posts={posts} />}
+        keyExtractor={(item) => item.id}
+        style={{ gap: 24 }}
+      ></FlatList>
     </View>
   );
 };
