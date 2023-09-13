@@ -11,27 +11,42 @@ import {
   TextInput,
   FlatList,
 } from "react-native";
-import { useRoute } from "@react-navigation/native";
+// import { useRoute } from "@react-navigation/native";
 
 const photoPostComment = require("../images/photoPostComment.jpg");
 
-const Item = ({ comment }) => {
+commentsTrial = [
+  {
+    id: 1386530,
+    text: "Really love your most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!",
+  },
+  {
+    id: 1290037,
+    text: "A fast 50mm like f1.8 would help with the bokeh. I’ve been using primes as they tend to get a bit sharper images.",
+  },
+  {
+    id: 1292391,
+    text: "Thank you! That was very helpful!",
+  },
+];
+
+const Comment = ({ item, onPress }) => {
   return (
-    <View style={styles.containerForComment}>
+    <View style={styles.containerForComment} onPress={onPress}>
       <View style={styles.profileIcon}>
-        <Image source={comment.iconProfile} />
+        <Image source={item.iconProfile} />
       </View>
-      <Text style={styles.textComment}>{comment.text}</Text>
-      <Text>{comment.dateCreate}</Text>
+      <Text style={styles.textComment}>{item.text}</Text>
+      <Text>{item.dateCreate}</Text>
     </View>
   );
 };
 
 const CommentsScreen = () => {
-  // const [comments, setComments] = useState([]);
+  const [selectedId, setSelectedId] = useState();
   const [isFocusComment, setIsFocusComment] = useState(false);
-
-  const route = useRoute();
+  // const route = useRoute();
+  // const { comments } = route.params;
 
   const handleComment = (text) => {
     const comment = {
@@ -42,6 +57,10 @@ const CommentsScreen = () => {
 
     const allComments = [comment, ...comments];
     setComments(allComments);
+  };
+
+  const renderItem = ({ item }) => {
+    return <Comment item={item} onPress={() => setSelectedId(item.id)} />;
   };
 
   return (
@@ -57,12 +76,14 @@ const CommentsScreen = () => {
             style={styles.photoPostComment}
           ></Image>
         </View>
-        <FlatList
-          data={route.params.comments}
-          renderItem={(comment) => <Item comment={comment} />}
-          keyExtractor={(item) => item.id}
-          style={{ gap: 24 }}
-        ></FlatList>
+        {commentsTrial && (
+          <FlatList
+            data={commentsTrial}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            extraData={selectedId}
+          />
+        )}
         <TextInput
           style={[styles.inputComment, isFocusComment && styles.isFocus]}
           autoCapitalize="none"
@@ -71,6 +92,7 @@ const CommentsScreen = () => {
           placeholder="Коментувати..."
           onFocus={() => setIsFocusComment(true)}
           onBlur={() => setIsFocusComment(false)}
+          multiline={true}
         />
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>

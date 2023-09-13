@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  Image,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -15,26 +14,10 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-const photoPostFirst = require("../images/photoPostCommentFirst.jpg");
-const photoPostSecond = require("../images/photoPostCommentSecond.jpg");
-
 const CreatePostsScreen = () => {
-  const [posts, setPosts] = useState([
-    {
-      postPhoto: photoPostFirst,
-      postTitle: "Ліс",
-      location: "Ivano-Frankivs'k Region, Ukraine",
-      comments: [],
-    },
-    {
-      postPhoto: photoPostSecond,
-      postTitle: "Захід сонця",
-      location: "Ivano-Frankivs'k Region, Ukraine",
-      comments: [],
-    },
-  ]);
+  const [posts, setPosts] = useState([]);
   const [postTitle, setPostTitle] = useState("");
-  const [postPhoto, setPostPhoto] = useState(photoPost);
+  const [postPhoto, setPostPhoto] = useState("");
   const [location, setLocation] = useState("");
   const [isFocusPostTitle, setIsFocusPostTitle] = useState(false);
   const [isFocusLocation, setIsFocusLocation] = useState(false);

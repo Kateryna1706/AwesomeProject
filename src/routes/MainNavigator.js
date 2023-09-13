@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import RegistrationScreen from "../screens/RegistrationScreen";
 import LoginScreen from "../screens/LoginScreen";
 import BottomNavіgator from "./BottomNavіgator";
+import CommentsScreen from "../screens/CommentsScreen";
 
 const MainStack = createStackNavigator();
 
@@ -31,6 +32,14 @@ const MainNavigator = () => {
           options={{
             title: false,
             headerShown: false,
+          }}
+        />
+        <MainStack.Screen
+          name="CommentsScreen"
+          component={CommentsScreen}
+          options={{
+            title: "Коментарі",
+            // headerShown: false,
           }}
         />
       </MainStack.Navigator>

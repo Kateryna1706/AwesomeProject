@@ -1,8 +1,8 @@
-import { Pressable, StyleSheet, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { EvilIcons } from "@expo/vector-icons";
 
-const Post = ({ post }) => {
+const Post = ({ item, onPress }) => {
   const navigation = useNavigation();
 
   const handlePressComment = (comments) => {
@@ -10,18 +10,18 @@ const Post = ({ post }) => {
   };
 
   return (
-    <View style={styles.containerPost}>
-      <Image source={post.postPhoto} style={styles.photo}></Image>
-      <Text style={styles.title}>{post.postTitle}</Text>
+    <View style={styles.containerPost} onPress={onPress}>
+      <Image source={item.postPhoto} style={styles.photo}></Image>
+      <Text style={styles.title}>{item.postTitle}</Text>
       <View style={styles.container}>
         <Pressable
-          onPress={() => handlePressComment(post.comments)}
+          onPress={() => handlePressComment(item.comments)}
           style={styles.containerComment}
         >
           <EvilIcons name="comment" size={18} color="black" />
-          <Text>{post.comments.length}</Text>
+          <Text>{item.comments.length}</Text>
         </Pressable>
-        <Text>{post.location}</Text>
+        <Text>{item.location}</Text>
       </View>
     </View>
   );
@@ -30,6 +30,7 @@ const Post = ({ post }) => {
 const styles = StyleSheet.create({
   containerPost: {
     gap: 8,
+    marginTop: 32,
   },
   photo: {
     height: 240,
