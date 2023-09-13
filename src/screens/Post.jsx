@@ -30,7 +30,7 @@ const Post = ({ item, onPress }) => {
 const styles = StyleSheet.create({
   containerPost: {
     gap: 8,
-    marginTop: 32,
+    marginBottom: 32,
   },
   photo: {
     height: 240,

@@ -39,7 +39,16 @@ const MainNavigator = () => {
           component={CommentsScreen}
           options={{
             title: "Коментарі",
-            // headerShown: false,
+            headerStyle: {
+              backgroundColor: "#FFFFFF",
+              borderBottomWidth: 1,
+            },
+            headerTitleAlign: "center",
+            headerTitleStyle: {
+              fontSize: 20,
+              lineHeight: 22,
+              color: "#212121",
+            },
           }}
         />
       </MainStack.Navigator>

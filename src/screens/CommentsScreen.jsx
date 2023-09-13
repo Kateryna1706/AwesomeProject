@@ -19,24 +19,29 @@ commentsTrial = [
   {
     id: 1386530,
     text: "Really love your most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!",
+    dateCreate: new Date().toString(),
   },
   {
     id: 1290037,
     text: "A fast 50mm like f1.8 would help with the bokeh. I’ve been using primes as they tend to get a bit sharper images.",
+    dateCreate: new Date().toString(),
   },
   {
     id: 1292391,
     text: "Thank you! That was very helpful!",
+    dateCreate: new Date().toString(),
   },
 ];
 
 const Comment = ({ item, onPress }) => {
   return (
     <View style={styles.containerForComment} onPress={onPress}>
-      <View style={styles.profileIcon}>
-        <Image source={item.iconProfile} />
+      <View>
+        <View style={styles.profileIcon}>
+          <Image source={item.iconProfile} />
+        </View>
+        <Text style={styles.textComment}>{item.text}</Text>
       </View>
-      <Text style={styles.textComment}>{item.text}</Text>
       <Text>{item.dateCreate}</Text>
     </View>
   );
@@ -55,7 +60,7 @@ const CommentsScreen = () => {
       dateCreate: new Date(),
     };
 
-    const allComments = [comment, ...comments];
+    const allComments = [comment, ...photoPostComment];
     setComments(allComments);
   };
 
@@ -66,7 +71,7 @@ const CommentsScreen = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
-        keyboardVerticalOffset={-131}
+        // keyboardVerticalOffset={1}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardContainer}
       >
@@ -84,16 +89,19 @@ const CommentsScreen = () => {
             extraData={selectedId}
           />
         )}
-        <TextInput
-          style={[styles.inputComment, isFocusComment && styles.isFocus]}
-          autoCapitalize="none"
-          onChangeText={handleComment}
-          value={""}
-          placeholder="Коментувати..."
-          onFocus={() => setIsFocusComment(true)}
-          onBlur={() => setIsFocusComment(false)}
-          multiline={true}
-        />
+        <View>
+          <TextInput
+            style={[styles.inputComment, isFocusComment && styles.isFocus]}
+            autoCapitalize="none"
+            onChangeText={handleComment}
+            value={""}
+            placeholder="Коментувати..."
+            onFocus={() => setIsFocusComment(true)}
+            onBlur={() => setIsFocusComment(false)}
+            multiline={true}
+          />
+          <View style={styles.iconButton}></View>
+        </View>
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
@@ -104,6 +112,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     paddingTop: 32,
+    paddingBottom: 16,
     paddingRight: 16,
     paddingLeft: 16,
     backgroundColor: "#ffffff",
@@ -111,6 +120,7 @@ const styles = StyleSheet.create({
   containerPost: {
     width: 343,
     height: 240,
+    marginBottom: 32,
     backgroundColor: "#F6F6F6",
   },
   photoPostComment: {
@@ -119,7 +129,7 @@ const styles = StyleSheet.create({
   },
   containerForComment: {
     flexDirection: "row",
-    gap: 16,
+    marginBottom: 24,
   },
   profileIcon: {
     width: 28,
@@ -139,11 +149,20 @@ const styles = StyleSheet.create({
     padding: 16,
     borderWidth: 1,
     borderColor: "#E8E8E8",
-    borderRadius: 25,
+    borderRadius: 100,
     fontSize: 16,
     lineHeight: 19,
     fontFamily: "Roboto",
     backgroundColor: "#F6F6F6",
+  },
+  iconButton: {
+    position: "absolute",
+    right: 8,
+    bottom: 14,
+    width: 34,
+    height: 34,
+    backgroundColor: "#FF6C00",
+    borderRadius: 50,
   },
   isFocus: {
     borderColor: "#FF6C00",

@@ -38,13 +38,13 @@ const RegistrationScreen = () => {
     setLogin("");
     setEmail("");
     setPassword("");
-    navigation.navigate("Home");
+    navigation.navigate("BottomNavіgator");
   };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
-        keyboardVerticalOffset={-131}
+        keyboardVerticalOffset={-60}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardContainer}
       >
@@ -130,6 +130,7 @@ const styles = StyleSheet.create({
     backgroundColor: `#ffffff`,
   },
   containerPhoto: {
+    position: "absolute",
     top: -60,
     alignSelf: "center",
     width: 120,
@@ -151,6 +152,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#E8E8E8",
   },
   header: {
+    marginTop: 92,
     marginBottom: 16,
     textAlign: "center",
     fontSize: 30,

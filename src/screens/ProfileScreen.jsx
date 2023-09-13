@@ -3,12 +3,10 @@ import {
   StyleSheet,
   Text,
   View,
-  KeyboardAvoidingView,
   Pressable,
   Image,
-  Keyboard,
-  Platform,
-  TouchableWithoutFeedback,
+  FlatList,
+  ImageBackground,
 } from "react-native";
 // import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
@@ -16,6 +14,7 @@ import Post from "./Post";
 // import { useRoute } from "@react-navigation/native";
 
 const photo = require("../images/photoProfile.jpg");
+import Background from "../images/background.jpg";
 const postsTrial = [
   {
     id: 3424515,
@@ -38,53 +37,58 @@ const ProfileScreen = () => {
   // const route = useRoute();
   // const { posts } = route.params;
 
+  const onPress = () => {
+    console.log("Profile");
+  };
+
   const renderItem = ({ item }) => {
     return <Post item={item} onPress={() => setSelectedId(item.id)} />;
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView
-        keyboardVerticalOffset={-131}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.keyboardContainer}
-      >
-        <View style={styles.profileContainer}>
-          <View style={styles.containerPhoto}>
-            <Image source={photo} style={styles.photoProfile} />
-            <Pressable onPress={onPress} style={styles.button}>
-              <AntDesign name="closecircleo" size={25} color="#BDBDBD" />
-            </Pressable>
-          </View>
-
-          <Text style={styles.header}>Natali Romanova</Text>
-          {postsTrial && (
-            <FlatList
-              data={postsTrial}
-              renderItem={renderItem}
-              keyExtractor={(item) => item.id}
-              extraData={selectedId}
-            />
-          )}
+    <ImageBackground
+      source={Background}
+      resizeMode="cover"
+      resizeMethod="resize"
+      style={styles.imageBackground}
+    >
+      <View style={styles.profileContainer}>
+        <View style={styles.containerPhoto}>
+          <Image source={photo} style={styles.photoProfile} />
+          <Pressable onPress={onPress} style={styles.button}>
+            <AntDesign name="closecircleo" size={25} color="#BDBDBD" />
+          </Pressable>
         </View>
-      </KeyboardAvoidingView>
-    </TouchableWithoutFeedback>
+
+        <Text style={styles.header}>Natali Romanova</Text>
+        {postsTrial && (
+          <FlatList
+            data={postsTrial}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            extraData={selectedId}
+          />
+        )}
+      </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  keyboardContainer: {
+  imageBackground: {
     flex: 1,
-    justifyContent: "flex-end",
   },
   profileContainer: {
-    padding: 16,
-    paddingTop: 0,
+    marginTop: 103,
+    backgroundColor: "#FFFFFF",
+    paddingRight: 16,
+    paddingLeft: 16,
+    paddingBottom: 160,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    backgroundColor: `#ffffff`,
   },
   containerPhoto: {
+    position: "absolute",
     top: -60,
     alignSelf: "center",
     width: 120,
@@ -103,7 +107,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#E8E8E8",
   },
   header: {
-    marginBottom: 16,
+    marginTop: 92,
+    marginBottom: 32,
     textAlign: "center",
     fontSize: 30,
     lineHeight: 35,

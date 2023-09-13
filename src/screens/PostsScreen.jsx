@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
   containerProfile: {
     flexDirection: "row",
     alignItems: "center",
+    marginBottom: 32,
   },
   containerPhoto: {
     width: 60,
