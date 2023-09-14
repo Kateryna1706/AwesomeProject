@@ -39,7 +39,7 @@ const BottomNavіgator = () => {
       <Tabs.Screen
         name="PostsScreen"
         component={PostsScreen}
-        options={{
+        options={({ navigation }) => ({
           title: "Публікації",
           headerStyle: {
             backgroundColor: "#FFFFFF",
@@ -52,21 +52,26 @@ const BottomNavіgator = () => {
             color: "#212121",
           },
           headerRight: () => (
-            <Pressable
-              onPress={() => ({
-                isLoggedIn: false,
-              })}
-              style={{ paddingRight: 20 }}
-            >
+            <Pressable onPress={() => navigation.navigate("LoginScreen")}>
               <Ionicons name="exit-outline" size={25} color="#BDBDBD" />
             </Pressable>
           ),
-        }}
+          headerRightContainerStyle: { paddingRight: 20 },
+        })}
       />
       <Tabs.Screen
         name="CreatePostsScreen"
         component={CreatePostsScreen}
-        options={{
+        options={({ navigation }) => ({
+          headerLeft: () => (
+            <Pressable onPress={() => navigation.navigate("PostsScreen")}>
+              <Ionicons name="arrow-back" size={24} color="#212121" />
+            </Pressable>
+          ),
+          headerBackVisible: true,
+          headerLeftContainerStyle: {
+            paddingLeft: 20,
+          },
           title: "Створити публікацію",
           headerStyle: {
             backgroundColor: "#FFFFFF",
@@ -78,7 +83,6 @@ const BottomNavіgator = () => {
             lineHeight: 22,
             color: "#212121",
           },
-          headerBackVisible: true,
           tabBarItemStyle: {
             borderRadius: 20,
             backgroundColor: "#FF6C00",
@@ -86,13 +90,14 @@ const BottomNavіgator = () => {
           tabBarStyle: {
             display: "none",
           },
-        }}
+        })}
       />
       <Tabs.Screen
         name="ProfileScreen"
         component={ProfileScreen}
         options={{
           title: false,
+          headerShown: false,
         }}
       />
     </Tabs.Navigator>

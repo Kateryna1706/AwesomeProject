@@ -1,7 +1,7 @@
 import { useState } from "react";
 import React from "react";
 import { FlatList, Image, StyleSheet, Text, View } from "react-native";
-import Post from "./Post";
+import Post from "../components/Post";
 // import { useRoute } from "@react-navigation/native";
 
 const postsTrial = [
@@ -17,6 +17,13 @@ const postsTrial = [
     postPhoto: require("../images/photoPostCommentSecond.jpg"),
     postTitle: "Захід сонця",
     location: "Ivano-Frankivs'k Region, Ukraine",
+    comments: [],
+  },
+  {
+    id: 1233333,
+    postPhoto: require("../images/photoPostCommentThird.jpg"),
+    postTitle: "Старий будиночок у Венеції",
+    location: "Italy",
     comments: [],
   },
 ];
@@ -52,6 +59,7 @@ const PostsScreen = () => {
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
           extraData={selectedId}
+          showsVerticalScrollIndicator={false}
         />
       )}
     </View>

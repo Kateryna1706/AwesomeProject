@@ -11,9 +11,12 @@ import {
   Keyboard,
   Platform,
   TouchableWithoutFeedback,
+  ImageBackground,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
+
+import Background from "../images/background.jpg";
 
 const photo = require("../images/photoProfile.jpg");
 
@@ -42,82 +45,97 @@ const RegistrationScreen = () => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView
-        keyboardVerticalOffset={-60}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.keyboardContainer}
-      >
-        <View style={styles.formContainer}>
-          <View style={styles.containerPhoto}>
-            <Image source={photo} style={styles.photoProfile} />
-            <Pressable onPress={onPress} style={styles.button}>
-              <AntDesign name="closecircleo" size={25} color="#BDBDBD" />
-            </Pressable>
-          </View>
+    <ImageBackground
+      source={Background}
+      resizeMode="cover"
+      resizeMethod="resize"
+      style={styles.imageBackground}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <KeyboardAvoidingView
+          keyboardVerticalOffset={-130}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={styles.keyboardContainer}
+        >
+          <View style={styles.formContainer}>
+            <View style={styles.containerPhoto}>
+              <Image source={photo} style={styles.photoProfile} />
+              <Pressable onPress={onPress} style={styles.button}>
+                <AntDesign name="closecircleo" size={25} color="#BDBDBD" />
+              </Pressable>
+            </View>
 
-          <Text style={styles.header}>Реєстрація</Text>
-          <TextInput
-            style={[styles.input, isFocusLogin && styles.isFocus]}
-            autoCapitalize="none"
-            onChangeText={setLogin}
-            value={login}
-            placeholder="Логін"
-            onFocus={() => setIsFocusLogin(true)}
-            onBlur={() => setIsFocusLogin(false)}
-          />
-          <TextInput
-            style={[styles.input, isFocusEmail && styles.isFocus]}
-            autoCapitalize="none"
-            onChangeText={setEmail}
-            value={email}
-            placeholder="Адреса електронної пошти"
-            keyboardType="email-address"
-            onFocus={() => setIsFocusEmail(true)}
-            onBlur={() => setIsFocusEmail(false)}
-          />
-          <View style={styles.buttonContainer}>
+            <Text style={styles.header}>Реєстрація</Text>
             <TextInput
-              style={[styles.input, isFocusPassword && styles.isFocus]}
+              style={[styles.input, isFocusLogin && styles.isFocus]}
               autoCapitalize="none"
-              onChangeText={setPassword}
-              value={password}
-              placeholder="Пароль"
-              secureTextEntry={secureTextEntry}
-              onFocus={() => setIsFocusPassword(true)}
-              onBlur={() => setIsFocusPassword(false)}
+              onChangeText={setLogin}
+              value={login}
+              placeholder="Логін"
+              onFocus={() => setIsFocusLogin(true)}
+              onBlur={() => setIsFocusLogin(false)}
             />
+            <TextInput
+              style={[styles.input, isFocusEmail && styles.isFocus]}
+              autoCapitalize="none"
+              onChangeText={setEmail}
+              value={email}
+              placeholder="Адреса електронної пошти"
+              keyboardType="email-address"
+              onFocus={() => setIsFocusEmail(true)}
+              onBlur={() => setIsFocusEmail(false)}
+            />
+            <View style={styles.buttonContainer}>
+              <TextInput
+                style={[styles.input, isFocusPassword && styles.isFocus]}
+                autoCapitalize="none"
+                onChangeText={setPassword}
+                value={password}
+                placeholder="Пароль"
+                secureTextEntry={secureTextEntry}
+                onFocus={() => setIsFocusPassword(true)}
+                onBlur={() => setIsFocusPassword(false)}
+              />
+              <Pressable
+                style={styles.textInput}
+                onPress={() => {
+                  setSecureTextEntry(!secureTextEntry);
+                }}
+              >
+                <Text>{secureTextEntry ? "Показати" : "Приховати"}</Text>
+              </Pressable>
+            </View>
             <Pressable
-              style={styles.textInput}
-              onPress={() => {
-                setSecureTextEntry(!secureTextEntry);
+              style={[
+                styles.buttonSubmit,
+                isButtonPress && styles.isButtonPress,
+              ]}
+              onPressIn={() => {
+                setIsButtonPress(true);
               }}
+              onPressOut={() => {
+                setIsButtonPress(false);
+              }}
+              onPress={handleSubmit}
             >
-              <Text>{secureTextEntry ? "Показати" : "Приховати"}</Text>
+              <Text style={styles.text}>Зареєстуватися</Text>
             </Pressable>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("LoginScreen")}
+            >
+              <Text style={styles.link}>Вже є акаунт? Увійти</Text>
+            </TouchableOpacity>
           </View>
-          <Pressable
-            style={[styles.buttonSubmit, isButtonPress && styles.isButtonPress]}
-            onPressIn={() => {
-              setIsButtonPress(true);
-            }}
-            onPressOut={() => {
-              setIsButtonPress(false);
-            }}
-            onPress={handleSubmit}
-          >
-            <Text style={styles.text}>Зареєстуватися</Text>
-          </Pressable>
-          <TouchableOpacity onPress={() => navigation.navigate("LoginScreen")}>
-            <Text style={styles.link}>Вже є акаунт? Увійти</Text>
-          </TouchableOpacity>
-        </View>
-      </KeyboardAvoidingView>
-    </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  imageBackground: {
+    flex: 1,
+  },
   keyboardContainer: {
     flex: 1,
     justifyContent: "flex-end",

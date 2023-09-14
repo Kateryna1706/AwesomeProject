@@ -17,6 +17,7 @@ const MainNavigator = () => {
           component={RegistrationScreen}
           options={{
             title: false,
+            headerShown: false,
           }}
         />
         <MainStack.Screen
@@ -24,6 +25,7 @@ const MainNavigator = () => {
           component={LoginScreen}
           options={{
             title: false,
+            headerShown: false,
           }}
         />
         <MainStack.Screen

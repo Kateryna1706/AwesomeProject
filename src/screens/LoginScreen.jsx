@@ -10,8 +10,11 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Platform,
+  ImageBackground,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+
+import Background from "../images/background.jpg";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -31,70 +34,80 @@ const LoginScreen = () => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView
-        keyboardVerticalOffset={-131}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.keyboardContainer}
-      >
-        <View style={styles.formContainer}>
-          <Text style={styles.header}>Увійти</Text>
+    <ImageBackground
+      source={Background}
+      resizeMode="cover"
+      resizeMethod="resize"
+      style={styles.imageBackground}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <KeyboardAvoidingView
+          keyboardVerticalOffset={-220}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={styles.keyboardContainer}
+        >
+          <View style={styles.formContainer}>
+            <Text style={styles.header}>Увійти</Text>
 
-          <TextInput
-            style={[styles.input, isFocusEmail && styles.isFocus]}
-            autoCapitalize="none"
-            onChangeText={setEmail}
-            value={email}
-            placeholder="Адреса електронної пошти"
-            keyboardType="email-address"
-            onFocus={() => setIsFocusEmail(true)}
-            onBlur={() => setIsFocusEmail(false)}
-          />
-          <View style={styles.buttonContainer}>
             <TextInput
-              style={[styles.input, isFocusPassword && styles.isFocus]}
+              style={[styles.input, isFocusEmail && styles.isFocus]}
               autoCapitalize="none"
-              onChangeText={setPassword}
-              value={password}
-              placeholder="Пароль"
-              secureTextEntry={secureTextEntry}
-              onFocus={() => setIsFocusPassword(true)}
-              onBlur={() => setIsFocusPassword(false)}
+              onChangeText={setEmail}
+              value={email}
+              placeholder="Адреса електронної пошти"
+              keyboardType="email-address"
+              onFocus={() => setIsFocusEmail(true)}
+              onBlur={() => setIsFocusEmail(false)}
             />
-            <Pressable
-              style={styles.textInput}
-              onPress={() => {
-                setSecureTextEntry(!secureTextEntry);
-              }}
-            >
-              <Text>{secureTextEntry ? "Показати" : "Приховати"}</Text>
-            </Pressable>
-          </View>
+            <View style={styles.buttonContainer}>
+              <TextInput
+                style={[styles.input, isFocusPassword && styles.isFocus]}
+                autoCapitalize="none"
+                onChangeText={setPassword}
+                value={password}
+                placeholder="Пароль"
+                secureTextEntry={secureTextEntry}
+                onFocus={() => setIsFocusPassword(true)}
+                onBlur={() => setIsFocusPassword(false)}
+              />
+              <Pressable
+                style={styles.textInput}
+                onPress={() => {
+                  setSecureTextEntry(!secureTextEntry);
+                }}
+              >
+                <Text>{secureTextEntry ? "Показати" : "Приховати"}</Text>
+              </Pressable>
+            </View>
 
-          <Pressable
-            style={[styles.button, isButtonPress && styles.isButtonPress]}
-            onPressIn={() => {
-              setIsButtonPress(true);
-            }}
-            onPressOut={() => {
-              setIsButtonPress(false);
-            }}
-            onPress={handleSubmit}
-          >
-            <Text style={styles.text}>Увійти</Text>
-          </Pressable>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("RegistrationScreen")}
-          >
-            <Text style={styles.link}>Немає акаунту? Зареєструватися</Text>
-          </TouchableOpacity>
-        </View>
-      </KeyboardAvoidingView>
-    </TouchableWithoutFeedback>
+            <Pressable
+              style={[styles.button, isButtonPress && styles.isButtonPress]}
+              onPressIn={() => {
+                setIsButtonPress(true);
+              }}
+              onPressOut={() => {
+                setIsButtonPress(false);
+              }}
+              onPress={handleSubmit}
+            >
+              <Text style={styles.text}>Увійти</Text>
+            </Pressable>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("RegistrationScreen")}
+            >
+              <Text style={styles.link}>Немає акаунту? Зареєструватися</Text>
+            </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  imageBackground: {
+    flex: 1,
+  },
   keyboardContainer: {
     flex: 1,
     justifyContent: "flex-end",

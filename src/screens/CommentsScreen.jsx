@@ -4,6 +4,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  Pressable,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
@@ -11,27 +12,10 @@ import {
   TextInput,
   FlatList,
 } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
 // import { useRoute } from "@react-navigation/native";
 
 const photoPostComment = require("../images/photoPostComment.jpg");
-
-commentsTrial = [
-  {
-    id: 1386530,
-    text: "Really love your most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!",
-    dateCreate: new Date().toString(),
-  },
-  {
-    id: 1290037,
-    text: "A fast 50mm like f1.8 would help with the bokeh. I’ve been using primes as they tend to get a bit sharper images.",
-    dateCreate: new Date().toString(),
-  },
-  {
-    id: 1292391,
-    text: "Thank you! That was very helpful!",
-    dateCreate: new Date().toString(),
-  },
-];
 
 const Comment = ({ item, onPress }) => {
   return (
@@ -50,6 +34,23 @@ const Comment = ({ item, onPress }) => {
 const CommentsScreen = () => {
   const [selectedId, setSelectedId] = useState();
   const [isFocusComment, setIsFocusComment] = useState(false);
+  const [comments, setComments] = useState([
+    {
+      id: 1386530,
+      text: "Really love your most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!",
+      dateCreate: 21,
+    },
+    {
+      id: 1290037,
+      text: "A fast 50mm like f1.8 would help with the bokeh. I’ve been using primes as they tend to get a bit sharper images.",
+      dateCreate: 21,
+    },
+    {
+      id: 1292391,
+      text: "Thank you! That was very helpful!",
+      dateCreate: 43,
+    },
+  ]);
   // const route = useRoute();
   // const { comments } = route.params;
 
@@ -57,10 +58,10 @@ const CommentsScreen = () => {
     const comment = {
       iconProfile: "",
       text,
-      dateCreate: new Date(),
+      dateCreate: Math.random().toFixed(6),
     };
 
-    const allComments = [comment, ...photoPostComment];
+    const allComments = [comment, ...comments];
     setComments(allComments);
   };
 
@@ -81,9 +82,9 @@ const CommentsScreen = () => {
             style={styles.photoPostComment}
           ></Image>
         </View>
-        {commentsTrial && (
+        {comments && (
           <FlatList
-            data={commentsTrial}
+            data={comments}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
             extraData={selectedId}
@@ -94,13 +95,16 @@ const CommentsScreen = () => {
             style={[styles.inputComment, isFocusComment && styles.isFocus]}
             autoCapitalize="none"
             onChangeText={handleComment}
-            value={""}
+            // value={""}
             placeholder="Коментувати..."
             onFocus={() => setIsFocusComment(true)}
+            // onBlur={() => handleComment(value)}
             onBlur={() => setIsFocusComment(false)}
             multiline={true}
           />
-          <View style={styles.iconButton}></View>
+          <Pressable style={styles.iconButton}>
+            <AntDesign name="arrowup" size={24} color="#ffffff" />
+          </Pressable>
         </View>
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
@@ -110,7 +114,7 @@ const CommentsScreen = () => {
 const styles = StyleSheet.create({
   keyboardContainer: {
     flex: 1,
-    justifyContent: "flex-start",
+    justifyContent: "center",
     paddingTop: 32,
     paddingBottom: 16,
     paddingRight: 16,
@@ -118,13 +122,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
   containerPost: {
-    width: 343,
     height: 240,
     marginBottom: 32,
     backgroundColor: "#F6F6F6",
   },
   photoPostComment: {
-    width: 343,
     height: 240,
   },
   containerForComment: {
@@ -156,6 +158,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#F6F6F6",
   },
   iconButton: {
+    justifyContent: "center",
+    alignItems: "center",
     position: "absolute",
     right: 8,
     bottom: 14,
