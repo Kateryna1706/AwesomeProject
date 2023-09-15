@@ -125,8 +125,6 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     paddingTop: 16,
-    paddingLeft: 16,
-    paddingRight: 16,
     backgroundColor: `#ffffff`,
   },
   input: {

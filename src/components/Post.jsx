@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
   },
   photo: {
     height: 240,
+    width: "100%",
   },
   title: {
     marginTop: 8,
