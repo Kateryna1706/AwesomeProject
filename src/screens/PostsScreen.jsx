@@ -2,36 +2,11 @@ import { useState } from "react";
 import React from "react";
 import { FlatList, Image, StyleSheet, Text, View } from "react-native";
 import Post from "../components/Post";
-// import { useRoute } from "@react-navigation/native";
-
-const postsTrial = [
-  {
-    id: 3424515,
-    postPhoto: require("../images/photoPostCommentFirst.jpg"),
-    postTitle: "Ліс",
-    location: "Ivano-Frankivs'k Region, Ukraine",
-    comments: [],
-  },
-  {
-    id: 1258933,
-    postPhoto: require("../images/photoPostCommentSecond.jpg"),
-    postTitle: "Захід сонця",
-    location: "Ivano-Frankivs'k Region, Ukraine",
-    comments: [],
-  },
-  {
-    id: 1233333,
-    postPhoto: require("../images/photoPostCommentThird.jpg"),
-    postTitle: "Старий будиночок у Венеції",
-    location: "Italy",
-    comments: [],
-  },
-];
+import { useRoute } from "@react-navigation/native";
 
 const PostsScreen = () => {
   const [selectedId, setSelectedId] = useState();
-  // const route = useRoute();
-  // const { posts } = route.params;
+  const route = useRoute();
 
   const renderItem = ({ item }) => {
     return <Post item={item} onPress={() => setSelectedId(item.id)} />;
@@ -53,14 +28,16 @@ const PostsScreen = () => {
           </Text>
         </View>
       </View>
-      {postsTrial && (
+      {route.params?.posts ? (
         <FlatList
-          data={postsTrial}
+          data={route.params.posts}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
           extraData={selectedId}
           showsVerticalScrollIndicator={false}
         />
+      ) : (
+        <View></View>
       )}
     </View>
   );

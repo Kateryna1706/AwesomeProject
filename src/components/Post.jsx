@@ -1,27 +1,55 @@
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { EvilIcons } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
+import * as Location from "expo-location";
 
 const Post = ({ item, onPress }) => {
   const navigation = useNavigation();
+
+  const pressLocation = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      console.log("Permission to access location was denied");
+    }
+
+    let locationCurrent = await Location.getCurrentPositionAsync({});
+    const coords = {
+      latitude: locationCurrent.coords.latitude,
+      longitude: locationCurrent.coords.longitude,
+    };
+    // setLocation(coords);
+    // console.log(location);
+    navigation.navigate("MapScreen", { location: coords });
+  };
 
   const handlePressComment = (comments) => {
     navigation.navigate("CommentsScreen", { comments });
   };
 
   return (
-    <View style={styles.containerPost} onPress={onPress}>
-      <Image source={item.postPhoto} style={styles.photo}></Image>
+    <View style={styles.containerPost} onPress={onPress} key={item.id}>
+      <Image source={{ uri: `${item.postPhoto}` }} style={styles.photo}></Image>
       <Text style={styles.title}>{item.postTitle}</Text>
       <View style={styles.container}>
         <Pressable
           onPress={() => handlePressComment(item.comments)}
           style={styles.containerComment}
         >
-          <EvilIcons name="comment" size={18} color="black" />
+          <FontAwesome
+            name="comment"
+            size={18}
+            color={item.comments.length > 0 ? "#FF6C00" : "#BDBDBD"}
+          />
+          {/* <EvilIcons name="comment" size={18} color="#BDBDBD" /> */}
           <Text>{item.comments.length}</Text>
         </Pressable>
-        <Text>{item.location}</Text>
+        <View style={styles.containerLocation}>
+          <Pressable onPress={pressLocation} style={styles.iconLocation}>
+            <EvilIcons name="location" size={24} color="#BDBDBD" />
+          </Pressable>
+          <Text>{item.location}</Text>
+        </View>
       </View>
     </View>
   );
@@ -50,6 +78,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 49,
     justifyContent: "space-between",
+  },
+  containerLocation: {
+    flexDirection: "row",
+    gap: 4,
+  },
+  iconLocation: {
+    width: 24,
+    height: 24,
   },
 });
 

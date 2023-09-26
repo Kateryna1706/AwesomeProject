@@ -90,6 +90,7 @@ const BottomNavіgator = () => {
           tabBarStyle: {
             display: "none",
           },
+          unmountOnBlur: true,
         })}
       />
       <Tabs.Screen

@@ -11,38 +11,14 @@ import {
 // import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import Post from "../components/Post";
-// import { useRoute } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 
 const photo = require("../images/photoProfile.jpg");
 import Background from "../images/background.jpg";
-const postsTrial = [
-  {
-    id: 3424515,
-    postPhoto: require("../images/photoPostCommentFirst.jpg"),
-    postTitle: "Ліс",
-    location: "Ukraine",
-    comments: [],
-  },
-  {
-    id: 1258933,
-    postPhoto: require("../images/photoPostCommentSecond.jpg"),
-    postTitle: "Захід на Чорному морі",
-    location: "Ukraine",
-    comments: [],
-  },
-  {
-    id: 1233333,
-    postPhoto: require("../images/photoPostCommentThird.jpg"),
-    postTitle: "Старий будиночок у Венеції",
-    location: "Italy",
-    comments: [],
-  },
-];
 
 const ProfileScreen = () => {
   const [selectedId, setSelectedId] = useState();
-  // const route = useRoute();
-  // const { posts } = route.params;
+  const route = useRoute();
 
   const onPress = () => {
     console.log("Profile");
@@ -68,9 +44,9 @@ const ProfileScreen = () => {
         </View>
 
         <Text style={styles.header}>Natali Romanova</Text>
-        {postsTrial && (
+        {route.params?.posts && (
           <FlatList
-            data={postsTrial}
+            data={route.params.posts}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
             extraData={selectedId}
@@ -87,6 +63,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   profileContainer: {
+    height: "100%",
     marginTop: 147,
     backgroundColor: "#FFFFFF",
     paddingRight: 16,
@@ -99,7 +76,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: -60,
     alignSelf: "center",
-    // width: 120,
     height: 120,
     borderRadius: 16,
     backgroundColor: "#F6F6F6",

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
+  Image,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -12,23 +13,100 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import { EvilIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { Camera, CameraType } from "expo-camera";
+import * as MediaLibrary from "expo-media-library";
+import * as Location from "expo-location";
+import { nanoid } from "nanoid/non-secure";
 
 const CreatePostsScreen = () => {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState([
+    // {
+    //   id: 3424515,
+    //   postPhoto: require("../images/photoPostCommentFirst.jpg"),
+    //   postTitle: "Ліс",
+    //   location: "Ivano-Frankivs'k Region, Ukraine",
+    //   comments: [],
+    // },
+    // {
+    //   id: 1258933,
+    //   postPhoto: require("../images/photoPostCommentSecond.jpg"),
+    //   postTitle: "Захід сонця",
+    //   location: "Ivano-Frankivs'k Region, Ukraine",
+    //   comments: [],
+    // },
+    // {
+    //   id: 1233333,
+    //   postPhoto: require("../images/photoPostCommentThird.jpg"),
+    //   postTitle: "Старий будиночок у Венеції",
+    //   location: "Italy",
+    //   comments: [],
+    // },
+  ]);
   const [postTitle, setPostTitle] = useState("");
   const [postPhoto, setPostPhoto] = useState("");
   const [location, setLocation] = useState("");
   const [isFocusPostTitle, setIsFocusPostTitle] = useState(false);
   const [isFocusLocation, setIsFocusLocation] = useState(false);
+  const [currentLocation, setCurrentLocation] = useState(null);
+  const [hasPermission, setHasPermission] = useState(null);
+  const [mediaPermission, requestMediaPermission] =
+    MediaLibrary.usePermissions();
+  const [cameraPermission, requestCameraPermission] =
+    Camera.useCameraPermissions();
+  const [cameraRef, setCameraRef] = useState(null);
+  const [type, setType] = useState(CameraType.back);
+  const [asset, setAsset] = useState("");
+
   const navigation = useNavigation();
 
-  const onPress = () => {
-    console.log("onPress");
+  const pressIconCamera = async () => {
+    if (cameraRef) {
+      const { uri } = await cameraRef.takePictureAsync();
+      const asset = await MediaLibrary.createAssetAsync(uri);
+      setAsset(asset.albumId);
+      setPostPhoto(uri);
+    }
   };
 
-  const createPost = () => {
+  const toggleCameraType = () => {
+    setType((current) =>
+      current === CameraType.back ? CameraType.front : CameraType.back
+    );
+  };
+
+  const uploadPhoto = async () => {
+    if (!hasPermission) {
+      return <Text>No access</Text>;
+    }
+    if (hasPermission) {
+      const library = await MediaLibrary.getAssetsAsync({ album: asset });
+      console.log(library);
+    }
+  };
+
+  const pressButtonDelete = () => {
+    setPostTitle("");
+    setPostPhoto("");
+    setLocation("");
+  };
+
+  const createPost = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      console.log("Permission to access location was denied");
+    }
+    let locationCurrent = await Location.getCurrentPositionAsync({});
+
+    const coords = {
+      latitude: locationCurrent.coords.latitude,
+      longitude: locationCurrent.coords.longitude,
+    };
+    setCurrentLocation(coords);
+
     const newPost = {
+      id: nanoid(),
       postPhoto,
       postTitle,
       location,
@@ -36,24 +114,52 @@ const CreatePostsScreen = () => {
     };
     const allPosts = [newPost, ...posts];
     setPosts(allPosts);
-    navigation.navigate("PostsScreen", { posts: posts });
+
+    navigation.navigate("PostsScreen", {
+      posts: allPosts,
+      location: currentLocation,
+    });
   };
+
+  useEffect(() => {
+    requestCameraPermission();
+    requestMediaPermission();
+  }, []);
+
+  useEffect(() => {
+    setHasPermission(cameraPermission?.granted && mediaPermission?.granted);
+  }, [cameraPermission, mediaPermission]);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
-        keyboardVerticalOffset={-131}
+        keyboardVerticalOffset={-110}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardContainer}
       >
         <View>
           <View style={styles.containerPost}>
-            {/* <Image source={photoPost} style={styles.photoPost}></Image> */}
-            <Pressable onPress={onPress} style={styles.iconPost}>
+            {postPhoto ? (
+              <Image
+                source={{ uri: `${postPhoto}` }}
+                style={styles.photoPost}
+              ></Image>
+            ) : (
+              <Camera
+                style={styles.camera}
+                type={type}
+                ref={setCameraRef}
+                ratio="1:1"
+                zoom={0}
+              ></Camera>
+            )}
+            <Pressable onPress={pressIconCamera} style={styles.iconPost}>
               <MaterialIcons name="photo-camera" size={24} color="#BDBDBD" />
             </Pressable>
           </View>
-          <Text style={styles.textPhoto}>Завантажте фото</Text>
+          <Pressable onPress={uploadPhoto}>
+            <Text style={styles.textPhoto}>Завантажте фото</Text>
+          </Pressable>
           <View style={styles.formContainer}>
             <TextInput
               style={[styles.input, isFocusPostTitle && styles.isFocus]}
@@ -64,21 +170,33 @@ const CreatePostsScreen = () => {
               onFocus={() => setIsFocusPostTitle(true)}
               onBlur={() => setIsFocusPostTitle(false)}
             />
-            <TextInput
-              style={[styles.input, isFocusLocation && styles.isFocus]}
-              autoCapitalize="none"
-              onChangeText={setLocation}
-              value={location}
-              placeholder="Місцевість..."
-              onFocus={() => setIsFocusLocation(true)}
-              onBlur={() => setIsFocusLocation(false)}
-            />
-            <Pressable style={styles.buttonSubmit} onPress={createPost}>
+            <View style={styles.containerInput}>
+              <Pressable style={styles.iconLocation}>
+                <EvilIcons name="location" size={24} color="#BDBDBD" />
+              </Pressable>
+              <TextInput
+                style={[styles.input, isFocusLocation && styles.isFocus]}
+                autoCapitalize="none"
+                onChangeText={setLocation}
+                value={location}
+                placeholder="Місцевість..."
+                onFocus={() => setIsFocusLocation(true)}
+                onBlur={() => setIsFocusLocation(false)}
+              />
+            </View>
+
+            <Pressable
+              style={[
+                styles.buttonSubmit,
+                postTitle && postPhoto && location && styles.buttonSubmitFocus,
+              ]}
+              onPress={createPost}
+            >
               <Text style={styles.textButton}>Опубліковати</Text>
             </Pressable>
           </View>
         </View>
-        <Pressable style={styles.buttonTrash}>
+        <Pressable onPress={pressButtonDelete} style={styles.buttonTrash}>
           <Ionicons name="trash-outline" size={24} color="#BDBDBD" />
         </Pressable>
       </KeyboardAvoidingView>
@@ -100,6 +218,9 @@ const styles = StyleSheet.create({
     height: 240,
     borderRadius: 8,
     backgroundColor: "#F6F6F6",
+  },
+  camera: {
+    flex: 1,
   },
   photoPost: {
     height: 240,
@@ -137,6 +258,16 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     fontFamily: "Roboto",
   },
+  containerInput: {
+    paddingLeft: 28,
+  },
+  iconLocation: {
+    position: "absolute",
+    left: 0,
+    top: 35,
+    width: 24,
+    height: 24,
+  },
   buttonSubmit: {
     justifyContent: "center",
     alignItems: "center",
@@ -154,6 +285,10 @@ const styles = StyleSheet.create({
   isFocus: {
     borderColor: "#FF6C00",
     backgroundColor: "#FFFFFF",
+  },
+  buttonSubmitFocus: {
+    backgroundColor: "#FF6C00",
+    color: "#FFFFFF",
   },
   buttonTrash: {
     alignSelf: "center",

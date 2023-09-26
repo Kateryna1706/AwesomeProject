@@ -5,6 +5,7 @@ import RegistrationScreen from "../screens/RegistrationScreen";
 import LoginScreen from "../screens/LoginScreen";
 import BottomNavіgator from "./BottomNavіgator";
 import CommentsScreen from "../screens/CommentsScreen";
+import MapScreen from "../screens/MapScreen";
 
 const MainStack = createStackNavigator();
 
@@ -41,6 +42,23 @@ const MainNavigator = () => {
           component={CommentsScreen}
           options={{
             title: "Коментарі",
+            headerStyle: {
+              backgroundColor: "#FFFFFF",
+              borderBottomWidth: 1,
+            },
+            headerTitleAlign: "center",
+            headerTitleStyle: {
+              fontSize: 20,
+              lineHeight: 22,
+              color: "#212121",
+            },
+          }}
+        />
+        <MainStack.Screen
+          name="MapScreen"
+          component={MapScreen}
+          options={{
+            title: "Карта",
             headerStyle: {
               backgroundColor: "#FFFFFF",
               borderBottomWidth: 1,
