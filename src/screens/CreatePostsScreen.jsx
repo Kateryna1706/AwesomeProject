@@ -66,14 +66,17 @@ const CreatePostsScreen = () => {
 
   const pressIconCamera = async () => {
     setLoading(true);
-    if (cameraRef) {
-      const { uri } = await cameraRef.takePictureAsync();
-      if (url) {
+    try {
+      if (cameraRef) {
+        const { uri } = await cameraRef.takePictureAsync();
         const asset = await MediaLibrary.createAssetAsync(uri);
         setAsset(asset.albumId);
         setPostPhoto(uri);
-        setLoading(false);
       }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -151,19 +154,6 @@ const CreatePostsScreen = () => {
       >
         <View>
           <View style={styles.containerPost}>
-            {loading && (
-              <ActivityIndicator
-                size="large"
-                color="#00ff00"
-                style={styles.loading}
-              />
-            )}
-            {postPhoto && !loading && (
-              <Image
-                source={{ uri: `${postPhoto}` }}
-                style={styles.photoPost}
-              ></Image>
-            )}
             {!postPhoto && !loading && (
               <Camera
                 style={styles.camera}
@@ -176,11 +166,27 @@ const CreatePostsScreen = () => {
                 }}
               ></Camera>
             )}
-            {!loading && (
-              <Pressable onPress={pressIconCamera} style={styles.iconPost}>
-                <MaterialIcons name="photo-camera" size={24} color="#BDBDBD" />
-              </Pressable>
+            {postPhoto && !loading && (
+              <Image
+                source={{ uri: `${postPhoto}` }}
+                style={styles.photoPost}
+              ></Image>
             )}
+            <Pressable
+              onPress={pressIconCamera}
+              style={styles.iconPost}
+              disabled={loading}
+            >
+              {loading ? (
+                <ActivityIndicator
+                  size="large"
+                  color="#00ff00"
+                  style={styles.loading}
+                />
+              ) : (
+                <MaterialIcons name="photo-camera" size={24} color="#BDBDBD" />
+              )}
+            </Pressable>
           </View>
           <Pressable onPress={uploadPhoto}>
             <Text style={styles.textPhoto}>Завантажте фото</Text>
