@@ -8,7 +8,8 @@ const MapScreen = () => {
   return (
     <View style={styles.container}>
       <MapView
-        style={styles.mapStyle}
+        style={StyleSheet.absoluteFillObject}
+        provider={MapView.PROVIDER_GOOGLE}
         initialRegion={{
           latitude: 37.78825,
           longitude: -122.4324,
@@ -36,6 +37,7 @@ const MapScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     gap: 8,
     marginBottom: 32,
   },
