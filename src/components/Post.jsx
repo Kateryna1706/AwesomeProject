@@ -44,12 +44,12 @@ const Post = ({ item, onPress }) => {
           {/* <EvilIcons name="comment" size={18} color="#BDBDBD" /> */}
           <Text>{item.comments.length}</Text>
         </Pressable>
-        <View style={styles.containerLocation}>
-          <Pressable onPress={pressLocation} style={styles.iconLocation}>
+        <Pressable onPress={pressLocation} style={styles.containerLocation}>
+          <View style={styles.iconLocation}>
             <EvilIcons name="location" size={24} color="#BDBDBD" />
-          </Pressable>
+          </View>
           <Text>{item.location}</Text>
-        </View>
+        </Pressable>
       </View>
     </View>
   );

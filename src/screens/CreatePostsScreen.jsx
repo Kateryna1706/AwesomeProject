@@ -10,6 +10,7 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   View,
+  ActivityIndicator,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
@@ -19,6 +20,7 @@ import { Camera, CameraType } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import * as Location from "expo-location";
 import { nanoid } from "nanoid/non-secure";
+import { launchImageLibrary } from "react-native-image-picker";
 
 const CreatePostsScreen = () => {
   const [posts, setPosts] = useState([
@@ -58,15 +60,20 @@ const CreatePostsScreen = () => {
   const [cameraRef, setCameraRef] = useState(null);
   const [type, setType] = useState(CameraType.back);
   const [asset, setAsset] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigation = useNavigation();
 
   const pressIconCamera = async () => {
+    setLoading(true);
     if (cameraRef) {
       const { uri } = await cameraRef.takePictureAsync();
-      const asset = await MediaLibrary.createAssetAsync(uri);
-      setAsset(asset.albumId);
-      setPostPhoto(uri);
+      if (url) {
+        const asset = await MediaLibrary.createAssetAsync(uri);
+        setAsset(asset.albumId);
+        setPostPhoto(uri);
+        setLoading(false);
+      }
     }
   };
 
@@ -84,6 +91,11 @@ const CreatePostsScreen = () => {
       const library = await MediaLibrary.getAssetsAsync({ album: asset });
       console.log(library);
     }
+
+    // const result = await launchImageLibrary({ mediaType: "photo" });
+    // if (result.assets) {
+    //   console.log(result.assets);
+    // }
   };
 
   const pressButtonDelete = () => {
@@ -139,23 +151,36 @@ const CreatePostsScreen = () => {
       >
         <View>
           <View style={styles.containerPost}>
-            {postPhoto ? (
+            {loading && (
+              <ActivityIndicator
+                size="large"
+                color="#00ff00"
+                style={styles.loading}
+              />
+            )}
+            {postPhoto && !loading && (
               <Image
                 source={{ uri: `${postPhoto}` }}
                 style={styles.photoPost}
               ></Image>
-            ) : (
+            )}
+            {!postPhoto && !loading && (
               <Camera
                 style={styles.camera}
                 type={type}
                 ref={setCameraRef}
                 ratio="1:1"
                 zoom={0}
+                onCameraReady={() => {
+                  console.log("Camera is ready");
+                }}
               ></Camera>
             )}
-            <Pressable onPress={pressIconCamera} style={styles.iconPost}>
-              <MaterialIcons name="photo-camera" size={24} color="#BDBDBD" />
-            </Pressable>
+            {!loading && (
+              <Pressable onPress={pressIconCamera} style={styles.iconPost}>
+                <MaterialIcons name="photo-camera" size={24} color="#BDBDBD" />
+              </Pressable>
+            )}
           </View>
           <Pressable onPress={uploadPhoto}>
             <Text style={styles.textPhoto}>Завантажте фото</Text>
@@ -215,6 +240,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
   containerPost: {
+    justifyContent: "center",
     height: 240,
     borderRadius: 8,
     backgroundColor: "#F6F6F6",
@@ -226,10 +252,13 @@ const styles = StyleSheet.create({
     height: 240,
     borderRadius: 8,
   },
+  loading: {
+    alignSelf: "center",
+  },
   iconPost: {
     position: "absolute",
     top: 90,
-    left: 142,
+    left: 148,
     justifyContent: "center",
     alignItems: "center",
     width: 60,
