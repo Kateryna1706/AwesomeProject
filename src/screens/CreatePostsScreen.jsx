@@ -154,7 +154,7 @@ const CreatePostsScreen = () => {
       >
         <View>
           <View style={styles.containerPost}>
-            {!postPhoto && !loading && (
+            {!postPhoto && (
               <Camera
                 style={styles.camera}
                 type={type}
