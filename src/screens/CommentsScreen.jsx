@@ -6,30 +6,16 @@ import {
   Platform,
   Pressable,
   StyleSheet,
-  Text,
   TouchableWithoutFeedback,
   View,
   TextInput,
   FlatList,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
+import Comment from "../components/Comment";
 // import { useRoute } from "@react-navigation/native";
 
 const photoPostComment = require("../images/photoPostComment.jpg");
-
-const Comment = ({ item, onPress }) => {
-  return (
-    <View style={styles.containerForComment} onPress={onPress}>
-      <View>
-        <View style={styles.profileIcon}>
-          <Image source={item.iconProfile} />
-        </View>
-        <Text style={styles.textComment}>{item.text}</Text>
-      </View>
-      <Text>{item.dateCreate}</Text>
-    </View>
-  );
-};
 
 const CommentsScreen = () => {
   const [selectedId, setSelectedId] = useState();
@@ -128,23 +114,6 @@ const styles = StyleSheet.create({
   },
   photoPostComment: {
     height: 240,
-  },
-  containerForComment: {
-    flexDirection: "row",
-    marginBottom: 24,
-  },
-  profileIcon: {
-    width: 28,
-    height: 28,
-    borderRadius: 50,
-    backgroundColor: "#000000",
-  },
-  textComment: {
-    padding: 16,
-    fontSize: 13,
-    lineHeight: 18,
-    color: "#212121",
-    backgroundColor: "#E5E5E5",
   },
   inputComment: {
     marginTop: 30,
