@@ -126,6 +126,7 @@ const CreatePostsScreen = () => {
       postTitle,
       location,
       comments: [],
+      like: 0,
     };
     const allPosts = [newPost, ...posts];
     setPosts(allPosts);
@@ -223,7 +224,14 @@ const CreatePostsScreen = () => {
               ]}
               onPress={createPost}
             >
-              <Text style={styles.textButton}>Опубліковати</Text>
+              <Text
+                style={[
+                  styles.textButton,
+                  postTitle && postPhoto && location && styles.textSubmitFocus,
+                ]}
+              >
+                Опубліковати
+              </Text>
             </Pressable>
           </View>
         </View>
@@ -323,6 +331,8 @@ const styles = StyleSheet.create({
   },
   buttonSubmitFocus: {
     backgroundColor: "#FF6C00",
+  },
+  textSubmitFocus: {
     color: "#FFFFFF",
   },
   buttonTrash: {

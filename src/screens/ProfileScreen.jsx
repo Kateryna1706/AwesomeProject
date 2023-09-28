@@ -12,6 +12,7 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import Post from "../components/Post";
 import { useRoute } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
 
 const photo = require("../images/photoProfile.jpg");
 import Background from "../images/background.jpg";
@@ -44,6 +45,12 @@ const ProfileScreen = () => {
         </View>
 
         <Text style={styles.header}>Natali Romanova</Text>
+        <Pressable
+          onPress={() => navigation.navigate("LoginScreen")}
+          style={styles.exit}
+        >
+          <Ionicons name="exit-outline" size={25} color="#BDBDBD" />
+        </Pressable>
         {route.params?.posts && (
           <FlatList
             data={route.params.posts}
@@ -82,6 +89,11 @@ const styles = StyleSheet.create({
   },
   photoProfile: {
     borderRadius: 16,
+  },
+  exit: {
+    position: "absolute",
+    top: 22,
+    right: 22,
   },
   button: {
     width: 25,

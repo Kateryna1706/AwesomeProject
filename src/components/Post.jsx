@@ -2,6 +2,7 @@ import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { EvilIcons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import * as Location from "expo-location";
 
 const Post = ({ item, onPress }) => {
@@ -18,9 +19,11 @@ const Post = ({ item, onPress }) => {
       latitude: locationCurrent.coords.latitude,
       longitude: locationCurrent.coords.longitude,
     };
-    // setLocation(coords);
-    // console.log(location);
     navigation.navigate("MapScreen", { location: coords });
+  };
+
+  const handlePressLike = () => {
+    item.like += 1;
   };
 
   const handlePressComment = (comments) => {
@@ -32,18 +35,30 @@ const Post = ({ item, onPress }) => {
       <Image source={{ uri: `${item.postPhoto}` }} style={styles.photo}></Image>
       <Text style={styles.title}>{item.postTitle}</Text>
       <View style={styles.container}>
-        <Pressable
-          onPress={() => handlePressComment(item.comments)}
-          style={styles.containerComment}
-        >
-          <FontAwesome
-            name="comment"
-            size={18}
-            color={item.comments.length > 0 ? "#FF6C00" : "#BDBDBD"}
-          />
-          {/* <EvilIcons name="comment" size={18} color="#BDBDBD" /> */}
-          <Text>{item.comments.length}</Text>
-        </Pressable>
+        <View style={styles.containerLikeComment}>
+          <Pressable
+            onPress={() => handlePressComment(item.comments)}
+            style={styles.containerComment}
+          >
+            <FontAwesome
+              name="comment"
+              size={18}
+              color={item.comments.length > 0 ? "#FF6C00" : "#BDBDBD"}
+            />
+            <Text>{item.comments.length}</Text>
+          </Pressable>
+          <Pressable
+            onPress={() => handlePressLike()}
+            style={styles.containerLike}
+          >
+            <AntDesign
+              name="like2"
+              size={20}
+              color={item.like > 0 ? "#FF6C00" : "#BDBDBD"}
+            />
+            <Text>{item.like}</Text>
+          </Pressable>
+        </View>
         <Pressable onPress={pressLocation} style={styles.containerLocation}>
           <View style={styles.iconLocation}>
             <EvilIcons name="location" size={24} color="#BDBDBD" />
@@ -70,7 +85,15 @@ const styles = StyleSheet.create({
     fontWeight: "medium",
     color: "#212121",
   },
+  containerLikeComment: {
+    flexDirection: "row",
+    gap: 24,
+  },
   containerComment: {
+    flexDirection: "row",
+    gap: 9,
+  },
+  containerLike: {
     flexDirection: "row",
     gap: 9,
   },
