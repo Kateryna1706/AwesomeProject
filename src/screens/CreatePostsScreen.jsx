@@ -19,33 +19,11 @@ import { useNavigation } from "@react-navigation/native";
 import { Camera, CameraType } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import * as Location from "expo-location";
-import { nanoid } from "nanoid/non-secure";
-import { launchImageLibrary } from "react-native-image-picker";
+// import { launchImageLibrary } from "react-native-image-picker";
+import { useDispatch } from "react-redux";
+import { addPost } from "../../redux/posts/postsOperations";
 
 const CreatePostsScreen = () => {
-  const [posts, setPosts] = useState([
-    // {
-    //   id: 3424515,
-    //   postPhoto: require("../images/photoPostCommentFirst.jpg"),
-    //   postTitle: "Ліс",
-    //   location: "Ivano-Frankivs'k Region, Ukraine",
-    //   comments: [],
-    // },
-    // {
-    //   id: 1258933,
-    //   postPhoto: require("../images/photoPostCommentSecond.jpg"),
-    //   postTitle: "Захід сонця",
-    //   location: "Ivano-Frankivs'k Region, Ukraine",
-    //   comments: [],
-    // },
-    // {
-    //   id: 1233333,
-    //   postPhoto: require("../images/photoPostCommentThird.jpg"),
-    //   postTitle: "Старий будиночок у Венеції",
-    //   location: "Italy",
-    //   comments: [],
-    // },
-  ]);
   const [postTitle, setPostTitle] = useState("");
   const [postPhoto, setPostPhoto] = useState("");
   const [location, setLocation] = useState("");
@@ -61,6 +39,7 @@ const CreatePostsScreen = () => {
   const [type, setType] = useState(CameraType.back);
   const [asset, setAsset] = useState("");
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const navigation = useNavigation();
 
@@ -121,18 +100,15 @@ const CreatePostsScreen = () => {
     setCurrentLocation(coords);
 
     const newPost = {
-      id: nanoid(),
       postPhoto,
       postTitle,
       location,
       comments: [],
       like: 0,
     };
-    const allPosts = [newPost, ...posts];
-    setPosts(allPosts);
+    dispatch(addPost(newPost));
 
     navigation.navigate("PostsScreen", {
-      posts: allPosts,
       location: currentLocation,
     });
   };

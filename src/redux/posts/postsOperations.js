@@ -1,59 +1,61 @@
-import axios from "axios";
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  doc,
+  deleteDoc,
+  updateDoc,
+} from "firebase/firestore";
+import { db } from "./config";
 
-axios.defaults.baseURL = "https://connections-api.herokuapp.com";
-
-export const fetchContacts = createAsyncThunk(
-  "contacts/fetchAll",
+export const fetchPosts = createAsyncThunk(
+  "posts/fetchAll",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get("/contacts");
-      return response.data;
+      const posts = await getDocs(collection(db, "posts"));
+      posts.forEach((doc) => console.log(`${doc.id} =>`, doc.data()));
+      return posts.map((doc) => ({ id: doc.id, data: doc.data() }));
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
 
-// export const addContact = createAsyncThunk(
-//   "contacts/addContact",
-//   async (contact, thunkAPI) => {
-//     try {
-//       const response = await axios.post("/contacts", contact);
-
-//       return response.data;
-//     } catch (error) {
-//       return thunkAPI.rejectWithValue(error.message);
-//     }
-//   }
-// );
-
-
-import { collection, addDoc } from "firebase/firestore";
-import { db } from "./config";
-
-const writeDataToFirestore = async () => {
-  try {
-    const docRef = await addDoc(collection(db, "users"), {
-      first: "Ada",
-      last: "Lovelace",
-      born: 1815,
-    });
-    console.log("Document written with ID: ", docRef.id);
-  } catch (e) {
-    console.error("Error adding document: ", e);
-    throw e;
-  }
-};
-
-
-
-export const deleteContact = createAsyncThunk(
-  "contacts/deleteContact",
-  async (contactId, thunkAPI) => {
+export const addPost = createAsyncThunk(
+  "posts/addPost",
+  async (post, thunkAPI) => {
     try {
-      const response = await axios.delete(`/contacts/${contactId}`);
-      return response.data;
+      const docRef = await addDoc(collection(db, "posts"), post);
+      console.log("Document written with ID: ", docRef.id);
+      return docRef.id;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deletePost = createAsyncThunk(
+  "posts/deletePost",
+  async (collectionName, docId, thunkAPI) => {
+    try {
+      const ref = doc(db, collectionName, docId);
+
+      await deleteDoc(ref);
+      console.log("document updated");
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const updatePost = createAsyncThunk(
+  "posts/updatePost",
+  async (collectionName, docId, date, thunkAPI) => {
+    try {
+      const ref = doc(db, collectionName, docId);
+
+      await updateDoc(ref, date);
+      console.log("document updated");
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

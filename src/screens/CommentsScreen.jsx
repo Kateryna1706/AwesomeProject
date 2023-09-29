@@ -13,32 +13,18 @@ import {
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import Comment from "../components/Comment";
-// import { useRoute } from "@react-navigation/native";
+import { useSelector } from "react-redux";
+import { selectPostsComments } from "redux/posts/postsSelectors";
+import { useDispatch } from "react-redux";
+import { updatePost } from "../../redux/posts/postsOperations";
 
 const photoPostComment = require("../images/photoPostComment.jpg");
 
 const CommentsScreen = () => {
   const [selectedId, setSelectedId] = useState();
   const [isFocusComment, setIsFocusComment] = useState(false);
-  const [comments, setComments] = useState([
-    {
-      id: 1386530,
-      text: "Really love your most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!",
-      dateCreate: 21,
-    },
-    {
-      id: 1290037,
-      text: "A fast 50mm like f1.8 would help with the bokeh. I’ve been using primes as they tend to get a bit sharper images.",
-      dateCreate: 21,
-    },
-    {
-      id: 1292391,
-      text: "Thank you! That was very helpful!",
-      dateCreate: 43,
-    },
-  ]);
-  // const route = useRoute();
-  // const { comments } = route.params;
+  const comments = useSelector(selectPostsComments);
+  const dispatch = useDispatch();
 
   const handleComment = (text) => {
     const comment = {
@@ -47,8 +33,7 @@ const CommentsScreen = () => {
       dateCreate: Math.random().toFixed(6),
     };
 
-    const allComments = [comment, ...comments];
-    setComments(allComments);
+    dispatch(updatePost(comment));
   };
 
   const renderItem = ({ item }) => {

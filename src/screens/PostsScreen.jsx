@@ -2,11 +2,12 @@ import { useState } from "react";
 import React from "react";
 import { FlatList, Image, StyleSheet, Text, View } from "react-native";
 import Post from "../components/Post";
-import { useRoute } from "@react-navigation/native";
+import { useSelector } from "react-redux";
+import { selectPosts } from "redux/posts/postsSelectors";
 
 const PostsScreen = () => {
   const [selectedId, setSelectedId] = useState();
-  const route = useRoute();
+  const posts = useSelector(selectPosts);
 
   const renderItem = ({ item }) => {
     return <Post item={item} onPress={() => setSelectedId(item.id)} />;
@@ -28,9 +29,9 @@ const PostsScreen = () => {
           </Text>
         </View>
       </View>
-      {route.params?.posts ? (
+      {posts ? (
         <FlatList
-          data={route.params.posts}
+          data={posts}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
           extraData={selectedId}

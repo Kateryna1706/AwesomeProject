@@ -8,18 +8,17 @@ import {
   FlatList,
   ImageBackground,
 } from "react-native";
-// import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import Post from "../components/Post";
-import { useRoute } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-
-const photo = require("../images/photoProfile.jpg");
+import { useSelector } from "react-redux";
+import { selectPosts } from "../redux/posts/postsSelectors";
 import Background from "../images/background.jpg";
+const photo = require("../images/photoProfile.jpg");
 
 const ProfileScreen = () => {
   const [selectedId, setSelectedId] = useState();
-  const route = useRoute();
+  const posts = useSelector(selectPosts);
 
   const onPress = () => {
     console.log("Profile");
@@ -51,9 +50,9 @@ const ProfileScreen = () => {
         >
           <Ionicons name="exit-outline" size={25} color="#BDBDBD" />
         </Pressable>
-        {route.params?.posts && (
+        {posts && (
           <FlatList
-            data={route.params.posts}
+            data={posts}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
             extraData={selectedId}

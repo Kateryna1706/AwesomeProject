@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { fetchContacts, addContact, deleteContact } from "./operations";
+import { fetchPosts, addPost, deletePost, updatePost } from "./postsOperations";
 
-const contactsInitialState = {
+const postsInitialState = {
   items: [],
   isLoading: false,
   error: null,
@@ -17,38 +17,38 @@ const handleRejected = (state, action) => {
   state.error = action.payload;
 };
 
-const contactsSlice = createSlice({
-  name: "contacts",
-  initialState: contactsInitialState,
+const postsSlice = createSlice({
+  name: "posts",
+  initialState: postsInitialState,
 
   extraReducers: (builder) => {
     builder
-      .addCase(fetchContacts.pending, (state, action) => {
+      .addCase(fetchPosts.pending, (state, action) => {
         handlePending(state);
       })
-      .addCase(fetchContacts.fulfilled, (state, action) => {
+      .addCase(fetchPosts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = null;
         state.items = action.payload;
       })
-      .addCase(fetchContacts.rejected, (state, action) => {
+      .addCase(fetchPosts.rejected, (state, action) => {
         handleRejected(state, action);
       })
-      .addCase(addContact.pending, (state, action) => {
+      .addCase(addPost.pending, (state, action) => {
         handlePending(state);
       })
-      .addCase(addContact.fulfilled, (state, action) => {
+      .addCase(addPost.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = null;
         state.items.push(action.payload);
       })
-      .addCase(addContact.rejected, (state, action) => {
+      .addCase(addPost.rejected, (state, action) => {
         handleRejected(state, action);
       })
-      .addCase(deleteContact.pending, (state, action) => {
+      .addCase(deletePost.pending, (state, action) => {
         handlePending(state);
       })
-      .addCase(deleteContact.fulfilled, (state, action) => {
+      .addCase(deletePost.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = null;
         const index = state.items.findIndex(
@@ -56,10 +56,21 @@ const contactsSlice = createSlice({
         );
         state.items.splice(index, 1);
       })
-      .addCase(deleteContact.rejected, (state, action) => {
+      .addCase(deletePost.rejected, (state, action) => {
+        handleRejected(state, action);
+      })
+      .addCase(updatePost.pending, (state, action) => {
+        handlePending(state);
+      })
+      .addCase(updatePost.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        state.items.comments.push(action.payload);
+      })
+      .addCase(updatePost.rejected, (state, action) => {
         handleRejected(state, action);
       });
   },
 });
 
-export const contactsReducer = contactsSlice.reducer;
+export const postsReducer = postsSlice.reducer;
