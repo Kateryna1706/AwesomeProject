@@ -1,6 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { fetchPosts, addPost, deletePost, updatePost } from "./postsOperations";
+import {
+  fetchPosts,
+  addPost,
+  deletePost,
+  updatePostComment,
+  updatePostLike,
+} from "./postsOperations";
 
 const postsInitialState = {
   items: [],
@@ -59,15 +65,32 @@ const postsSlice = createSlice({
       .addCase(deletePost.rejected, (state, action) => {
         handleRejected(state, action);
       })
-      .addCase(updatePost.pending, (state, action) => {
+      .addCase(updatePostComment.pending, (state, action) => {
         handlePending(state);
       })
-      .addCase(updatePost.fulfilled, (state, action) => {
+      .addCase(updatePostComment.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = null;
-        state.items.comments.push(action.payload);
+        const index = state.items.findIndex(
+          (post) => post.id === action.payload.id
+        );
+        state.items[index].comments.push(action.payload);
       })
-      .addCase(updatePost.rejected, (state, action) => {
+      .addCase(updatePostComment.rejected, (state, action) => {
+        handleRejected(state, action);
+      })
+      .addCase(updatePostLike.pending, (state, action) => {
+        handlePending(state);
+      })
+      .addCase(updatePostLike.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        const index = state.items.findIndex(
+          (post) => post.id === action.payload.id
+        );
+        state.items[index].like += 1;
+      })
+      .addCase(updatePostLike.rejected, (state, action) => {
         handleRejected(state, action);
       });
   },

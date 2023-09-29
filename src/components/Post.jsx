@@ -4,9 +4,12 @@ import { EvilIcons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import * as Location from "expo-location";
+import { useDispatch } from "react-redux";
+import { updatePostLike } from "../redux/posts/postsOperations";
 
 const Post = ({ item, onPress }) => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const pressLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -22,12 +25,12 @@ const Post = ({ item, onPress }) => {
     navigation.navigate("MapScreen", { location: coords });
   };
 
-  const handlePressLike = () => {
-    item.like += 1;
+  const handlePressLike = (id) => {
+    dispatch(updatePostLike(id));
   };
 
-  const handlePressComment = (comments) => {
-    navigation.navigate("CommentsScreen", { comments });
+  const handlePressComment = () => {
+    navigation.navigate("CommentsScreen");
   };
 
   return (
@@ -37,7 +40,7 @@ const Post = ({ item, onPress }) => {
       <View style={styles.container}>
         <View style={styles.containerLikeComment}>
           <Pressable
-            onPress={() => handlePressComment(item.comments)}
+            onPress={handlePressComment}
             style={styles.containerComment}
           >
             <FontAwesome
@@ -48,7 +51,7 @@ const Post = ({ item, onPress }) => {
             <Text>{item.comments.length}</Text>
           </Pressable>
           <Pressable
-            onPress={() => handlePressLike()}
+            onPress={() => handlePressLike(item.id)}
             style={styles.containerLike}
           >
             <AntDesign

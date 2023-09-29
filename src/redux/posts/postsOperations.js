@@ -36,9 +36,9 @@ export const addPost = createAsyncThunk(
 
 export const deletePost = createAsyncThunk(
   "posts/deletePost",
-  async (collectionName, docId, thunkAPI) => {
+  async (docId, thunkAPI) => {
     try {
-      const ref = doc(db, collectionName, docId);
+      const ref = doc(db, "posts", docId);
 
       await deleteDoc(ref);
       console.log("document updated");
@@ -48,13 +48,27 @@ export const deletePost = createAsyncThunk(
   }
 );
 
-export const updatePost = createAsyncThunk(
+export const updatePostComment = createAsyncThunk(
   "posts/updatePost",
-  async (collectionName, docId, date, thunkAPI) => {
+  async (docId, date, thunkAPI) => {
     try {
-      const ref = doc(db, collectionName, docId);
+      const ref = doc(db, "posts", docId);
 
-      await updateDoc(ref, date);
+      await updateDoc(ref, { comments: arrayUnion(date) });
+      console.log("document updated");
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const updatePostLike = createAsyncThunk(
+  "posts/updatePost",
+  async (docId, thunkAPI) => {
+    try {
+      const ref = doc(db, "posts", docId);
+
+      await updateDoc(ref, { like: increment(1) });
       console.log("document updated");
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

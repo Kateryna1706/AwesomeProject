@@ -9,7 +9,7 @@ import {
   TouchableWithoutFeedback,
   View,
   TextInput,
-  FlatList,
+  FlatList,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import Comment from "../components/Comment";
@@ -33,7 +33,7 @@ const CommentsScreen = () => {
       dateCreate: Math.random().toFixed(6),
     };
 
-    dispatch(updatePost(comment));
+    dispatch(updatePostComment(comment));
   };
 
   const renderItem = ({ item }) => {
