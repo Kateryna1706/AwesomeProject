@@ -25,12 +25,12 @@ const Post = ({ item, onPress }) => {
     navigation.navigate("MapScreen", { location: coords });
   };
 
-  const handlePressLike = (id) => {
-    dispatch(updatePostLike(id));
+  const handlePressLike = (postId) => {
+    dispatch(updatePostLike(postId));
   };
 
-  const handlePressComment = () => {
-    navigation.navigate("CommentsScreen");
+  const handlePressComment = (postId) => {
+    navigation.navigate("CommentsScreen", { postId });
   };
 
   return (
@@ -40,7 +40,7 @@ const Post = ({ item, onPress }) => {
       <View style={styles.container}>
         <View style={styles.containerLikeComment}>
           <Pressable
-            onPress={handlePressComment}
+            onPress={() => handlePressComment(item.id)}
             style={styles.containerComment}
           >
             <FontAwesome

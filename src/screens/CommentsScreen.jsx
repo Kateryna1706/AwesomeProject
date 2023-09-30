@@ -9,22 +9,28 @@ import {
   TouchableWithoutFeedback,
   View,
   TextInput,
-  FlatList,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+  FlatList,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import Comment from "../components/Comment";
 import { useSelector } from "react-redux";
-import { selectPostsComments } from "redux/posts/postsSelectors";
+import { selectPosts } from "redux/posts/postsSelectors";
 import { useDispatch } from "react-redux";
-import { updatePost } from "../../redux/posts/postsOperations";
+import { useRoute } from "@react-navigation/native";
+import { updatePostComment } from "../redux/posts/postsOperations";
 
 const photoPostComment = require("../images/photoPostComment.jpg");
 
 const CommentsScreen = () => {
   const [selectedId, setSelectedId] = useState();
   const [isFocusComment, setIsFocusComment] = useState(false);
-  const comments = useSelector(selectPostsComments);
+  const posts = useSelector(selectPosts);
   const dispatch = useDispatch();
+  const {
+    params: { postId },
+  } = useRoute();
+
+  const selectedPost = posts.find((post) => post.id === postId);
 
   const handleComment = (text) => {
     const comment = {
@@ -33,7 +39,7 @@ const CommentsScreen = () => {
       dateCreate: Math.random().toFixed(6),
     };
 
-    dispatch(updatePostComment(comment));
+    dispatch(updatePostComment({ postId, comment }));
   };
 
   const renderItem = ({ item }) => {
@@ -53,9 +59,9 @@ const CommentsScreen = () => {
             style={styles.photoPostComment}
           ></Image>
         </View>
-        {comments && (
+        {selectedPost?.comments && (
           <FlatList
-            data={comments}
+            data={selectedPost.comments}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
             extraData={selectedId}

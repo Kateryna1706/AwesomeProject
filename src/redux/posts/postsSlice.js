@@ -74,7 +74,8 @@ const postsSlice = createSlice({
         const index = state.items.findIndex(
           (post) => post.id === action.payload.id
         );
-        state.items[index].comments.push(action.payload);
+        state.items[index] = action.payload;
+        // state.items[index].comments.push(action.payload);
       })
       .addCase(updatePostComment.rejected, (state, action) => {
         handleRejected(state, action);
@@ -88,7 +89,7 @@ const postsSlice = createSlice({
         const index = state.items.findIndex(
           (post) => post.id === action.payload.id
         );
-        state.items[index].like += 1;
+        state.items[index] = action.payload;
       })
       .addCase(updatePostLike.rejected, (state, action) => {
         handleRejected(state, action);
