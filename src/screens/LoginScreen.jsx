@@ -13,6 +13,7 @@ import {
   ImageBackground,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
 
 import Background from "../images/background.jpg";
 
@@ -23,11 +24,13 @@ const LoginScreen = () => {
   const [isFocusPassword, setIsFocusPassword] = useState(false);
   const [isButtonPress, setIsButtonPress] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const dispatch = useDispatch();
 
   const navigation = useNavigation();
 
   const handleSubmit = () => {
-    console.log({ email, password });
+    // console.log({ email, password });
+    dispatch(logIn({ email, password }));
     setEmail("");
     setPassword("");
     navigation.navigate("BottomNavіgator");

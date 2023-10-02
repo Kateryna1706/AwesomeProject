@@ -15,8 +15,10 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
+import { useDispatch } from "react-redux";
 
 import Background from "../images/background.jpg";
+import { register } from "../redux/auth/authOperations";
 
 const photo = require("../images/photoProfile.jpg");
 
@@ -29,7 +31,7 @@ const RegistrationScreen = () => {
   const [isFocusPassword, setIsFocusPassword] = useState(false);
   const [isButtonPress, setIsButtonPress] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
-
+  const dispatch = useDispatch();
   const navigation = useNavigation();
 
   const onPress = () => {
@@ -37,7 +39,8 @@ const RegistrationScreen = () => {
   };
 
   const handleSubmit = () => {
-    console.log({ login, email, password });
+    // console.log({ login, email, password });
+    dispatch(register({ email, password }));
     setLogin("");
     setEmail("");
     setPassword("");

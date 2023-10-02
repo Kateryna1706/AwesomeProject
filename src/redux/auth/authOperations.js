@@ -23,7 +23,7 @@ export const logIn = createAsyncThunk(
   async (credentials, thunkAPI) => {
     try {
       const respond = await signInWithEmailAndPassword(auth, credentials);
-      return respond.user;
+      return respond;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -36,7 +36,8 @@ export const refreshUser = createAsyncThunk(
     const user = auth.currentUser;
     if (user) {
       try {
-        await updateProfile(user, update);
+        const respond = await updateProfile(user, update);
+        return respond;
       } catch (error) {
         return thunkAPI.rejectWithValue(error.message);
       }
