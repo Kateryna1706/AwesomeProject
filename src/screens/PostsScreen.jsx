@@ -3,7 +3,7 @@ import React from "react";
 import { FlatList, Image, StyleSheet, Text, View } from "react-native";
 import Post from "../components/Post";
 import { useSelector } from "react-redux";
-import { selectPosts } from "redux/posts/postsSelectors";
+import { selectPosts } from "../redux/posts/postsSelectors";
 
 const PostsScreen = () => {
   const [selectedId, setSelectedId] = useState();

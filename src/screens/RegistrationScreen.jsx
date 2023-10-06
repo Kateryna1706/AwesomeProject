@@ -23,6 +23,7 @@ import { register } from "../redux/auth/authOperations";
 const photo = require("../images/photoProfile.jpg");
 
 const RegistrationScreen = () => {
+  const [photoProfile, setPhotoProfile] = useState(photo);
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,13 +35,13 @@ const RegistrationScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const onPress = () => {
-    console.log("onPress");
+  const onPressPhoto = () => {
+    setPhotoProfile();
   };
 
   const handleSubmit = () => {
-    // console.log({ login, email, password });
     dispatch(register({ email, password }));
+    dispatch(refreshUser({ displayName: login, photoURL: photoProfile }));
     setLogin("");
     setEmail("");
     setPassword("");
@@ -62,8 +63,8 @@ const RegistrationScreen = () => {
         >
           <View style={styles.formContainer}>
             <View style={styles.containerPhoto}>
-              <Image source={photo} style={styles.photoProfile} />
-              <Pressable onPress={onPress} style={styles.button}>
+              <Image source={photoProfile} style={styles.photoProfile} />
+              <Pressable onPress={onPressPhoto} style={styles.button}>
                 <AntDesign name="closecircleo" size={25} color="#BDBDBD" />
               </Pressable>
             </View>

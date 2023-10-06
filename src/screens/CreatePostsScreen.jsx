@@ -21,7 +21,8 @@ import * as MediaLibrary from "expo-media-library";
 import * as Location from "expo-location";
 // import { launchImageLibrary } from "react-native-image-picker";
 import { useDispatch } from "react-redux";
-import { addPost } from "../../redux/posts/postsOperations";
+import { addPost } from "../redux/posts/postsOperations";
+
 
 const CreatePostsScreen = () => {
   const [postTitle, setPostTitle] = useState("");

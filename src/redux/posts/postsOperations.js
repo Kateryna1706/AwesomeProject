@@ -7,7 +7,8 @@ import {
   updateDoc,
   serverTimestamp,
 } from "firebase/firestore";
-import { db } from "./config";
+import { db } from "../../../config";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchPosts = createAsyncThunk(
   "posts/fetchAll",
@@ -31,7 +32,7 @@ export const addPost = createAsyncThunk(
         timestamp: serverTimestamp(),
         ...data,
       });
-      console.log("Document written with ID: ", docRef.id);
+      console.log("Document written with ID: ", post.id);
       return post;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

@@ -14,7 +14,7 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import Comment from "../components/Comment";
 import { useSelector } from "react-redux";
-import { selectPosts } from "redux/posts/postsSelectors";
+import { selectPosts } from "../redux/posts/postsSelectors";
 import { useDispatch } from "react-redux";
 import { useRoute } from "@react-navigation/native";
 import { updatePostComment } from "../redux/posts/postsOperations";

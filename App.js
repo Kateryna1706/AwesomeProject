@@ -3,10 +3,10 @@ import React from "react";
 import { useFonts } from "expo-font";
 import MainNavigator from "./src/routes/MainNavigator";
 import { Provider } from "react-redux";
-import { persistor, store } from "./redux/store";
+import { persistor, store } from "./src/redux/store";
 import { PersistGate } from "redux-persist/integration/react";
-
 import { View } from "react-native";
+import { AppRegistry } from "react-native";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -27,3 +27,5 @@ export default function App() {
     </Provider>
   );
 }
+
+AppRegistry.registerComponent("main", () => App);

@@ -3,32 +3,37 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import { auth } from "./config";
+import { auth } from "../../../config";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const register = createAsyncThunk(
   "auth/register",
-  async (credentials, thunkAPI) => {
+  async (data, thunkAPI) => {
     try {
-      const respond = await createUserWithEmailAndPassword(auth, credentials);
-      return respond;
+      const response = await createUserWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      );
+      return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
 
-export const logIn = createAsyncThunk(
-  "auth/login",
-  async (credentials, thunkAPI) => {
-    try {
-      const respond = await signInWithEmailAndPassword(auth, credentials);
-      return respond;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
+export const logIn = createAsyncThunk("auth/login", async (data, thunkAPI) => {
+  try {
+    const response = await signInWithEmailAndPassword(
+      auth,
+      data.email,
+      data.password
+    );
+    return response;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.message);
   }
-);
+});
 
 export const refreshUser = createAsyncThunk(
   "auth/refresh",
@@ -36,8 +41,8 @@ export const refreshUser = createAsyncThunk(
     const user = auth.currentUser;
     if (user) {
       try {
-        const respond = await updateProfile(user, update);
-        return respond;
+        const response = await updateProfile(user, update);
+        return response;
       } catch (error) {
         return thunkAPI.rejectWithValue(error.message);
       }
