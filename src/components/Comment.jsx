@@ -1,11 +1,15 @@
 import { Text, Image, View, StyleSheet } from "react-native";
+import { useSelector } from "react-redux";
+import { selectUser } from "../redux/auth/authSelectors";
 
 const Comment = ({ item, onPress }) => {
+  // const user = useSelector(selectUser);
+
   return (
     <View style={styles.containerForComment} onPress={onPress}>
       <View>
         <View style={styles.profileIcon}>
-          <Image source={item.iconProfile} />
+          <Image source={{ uri: `${item.user.photo}` }} />
         </View>
         <Text style={styles.textComment}>{item.text}</Text>
       </View>

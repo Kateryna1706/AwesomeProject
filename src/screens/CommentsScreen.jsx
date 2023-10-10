@@ -18,6 +18,7 @@ import { selectPosts } from "../redux/posts/postsSelectors";
 import { useDispatch } from "react-redux";
 import { useRoute } from "@react-navigation/native";
 import { updatePostComment } from "../redux/posts/postsOperations";
+import { selectUser } from "../redux/auth/authSelectors";
 
 const photoPostComment = require("../images/photoPostComment.jpg");
 
@@ -29,14 +30,23 @@ const CommentsScreen = () => {
   const {
     params: { postId },
   } = useRoute();
+  const user = useSelector(selectUser);
 
   const selectedPost = posts.find((post) => post.id === postId);
 
+  const getDateCreate = () => {
+    const date = new Date();
+    const dateCreate = `${date.getDate()} червня, ${
+      date.getFullYear() + 1
+    } | ${date.getHours()}:${date.getMinutes()}`;
+    return dateCreate;
+  };
+
   const handleComment = (text) => {
     const comment = {
-      iconProfile: "",
+      user,
       text,
-      dateCreate: Math.random().toFixed(6),
+      dateCreate: getDateCreate(),
     };
 
     dispatch(updatePostComment({ postId, comment }));

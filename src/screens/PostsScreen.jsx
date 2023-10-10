@@ -4,10 +4,12 @@ import { FlatList, Image, StyleSheet, Text, View } from "react-native";
 import Post from "../components/Post";
 import { useSelector } from "react-redux";
 import { selectPosts } from "../redux/posts/postsSelectors";
+import { selectUser } from "../redux/auth/authSelectors";
 
 const PostsScreen = () => {
   const [selectedId, setSelectedId] = useState();
   const posts = useSelector(selectPosts);
+  const user = useSelector(selectUser);
 
   const renderItem = ({ item }) => {
     return <Post item={item} onPress={() => setSelectedId(item.id)} />;
@@ -15,20 +17,17 @@ const PostsScreen = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.containerProfile}>
-        <View style={styles.containerPhoto}>
-          <Image
-            source={require("../images/photoProfile.jpg")}
-            style={styles.photo}
-          />
+      {user && (
+        <View style={styles.containerProfile}>
+          <View style={styles.containerPhoto}>
+            <Image source={{ uri: `${user.photo}` }} style={styles.photo} />
+          </View>
+          <View>
+            <Text style={styles.name}>{user.name}</Text>
+            <Text style={{ fontSize: 11, color: "#212121" }}>{user.email}</Text>
+          </View>
         </View>
-        <View>
-          <Text style={styles.name}>Natali Romanova</Text>
-          <Text style={{ fontSize: 11, color: "#212121" }}>
-            email@example.com
-          </Text>
-        </View>
-      </View>
+      )}
       {posts ? (
         <FlatList
           data={posts}

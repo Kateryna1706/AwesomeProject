@@ -14,9 +14,23 @@ export const fetchPosts = createAsyncThunk(
   "posts/fetchAll",
   async (_, thunkAPI) => {
     try {
-      const posts = await getDocs(collection(db, "posts"));
-      posts.forEach((doc) => console.log(`${doc.id} =>`, doc.data()));
-      posts.map((doc) => ({ id: doc.id, data: doc.data() }));
+      const response = await getDocs(collection(db, "posts"));
+      let posts = [];
+      response.forEach((doc) => console.log(`${doc.id} =>`, doc.data()));
+      response.map((post) => {
+        const id = post.id;
+        const data = post.data();
+        const onePost = {
+          id,
+          postPhoto: data.postPhoto,
+          postTitle: data.postTitle,
+          location: data.location,
+          comments: data.comments,
+          like: data.like,
+        };
+        posts.push(onePost);
+      });
+
       return posts;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -26,14 +40,20 @@ export const fetchPosts = createAsyncThunk(
 
 export const addPost = createAsyncThunk(
   "posts/addPost",
-  async (data, thunkAPI) => {
+  async (post, thunkAPI) => {
     try {
-      const post = await addDoc(collection(db, "posts"), {
+      const response = await addDoc(collection(db, "posts"), {
         timestamp: serverTimestamp(),
-        ...data,
+        ...post,
       });
       console.log("Document written with ID: ", post.id);
-      return post;
+      const id = response.id;
+      const data = response.getDoc();
+      console.log(`data ${data}`);
+      return {
+        id,
+        data,
+      };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -62,9 +82,9 @@ export const updatePostComment = createAsyncThunk(
       const ref = doc(db, "posts", data.postId);
 
       const updatedPost = await updateDoc(ref, {
-        comments: arrayUnion(data.comment),
+        comments: arrayUnion({ timestamp: serverTimestamp(), ...data.comment }),
       });
-      console.log("document updated");
+      console.log("document comments updated");
       return updatedPost;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -79,7 +99,7 @@ export const updatePostLike = createAsyncThunk(
       const ref = doc(db, "posts", docId);
 
       const updatedPost = await updateDoc(ref, { like: increment(1) });
-      console.log("document updated");
+      console.log("document like updated");
       return updatedPost;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

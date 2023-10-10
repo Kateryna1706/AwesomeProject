@@ -46,9 +46,9 @@ const Post = ({ item, onPress }) => {
             <FontAwesome
               name="comment"
               size={18}
-              color={item.comments.length > 0 ? "#FF6C00" : "#BDBDBD"}
+              color={item.comments?.length > 0 ? "#FF6C00" : "#BDBDBD"}
             />
-            <Text>{item.comments.length}</Text>
+            <Text>{item.comments?.length}</Text>
           </Pressable>
           <Pressable
             onPress={() => handlePressLike(item.id)}

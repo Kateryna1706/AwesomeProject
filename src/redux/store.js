@@ -33,7 +33,16 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        ignoredActions: [
+          FLUSH,
+          REHYDRATE,
+          PAUSE,
+          PERSIST,
+          PURGE,
+          REGISTER,
+          "your/action/type",
+        ],
+        ignoredActionPaths: ["meta.arg", "payload", "posts.items"],
       },
     }),
   devTools: process.env.NODE_ENV === "development",

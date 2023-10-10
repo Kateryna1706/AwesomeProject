@@ -4,10 +4,35 @@ import CreatePostsScreen from "../screens/CreatePostsScreen";
 import PostsScreen from "../screens/PostsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import { Pressable } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { logOut } from "../redux/auth/authOperations";
+import { selectError, selectUser } from "../redux/auth/authSelectors";
+import { useEffect } from "react";
 
 const Tabs = createBottomTabNavigator();
 
 const BottomNavіgator = () => {
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+  const error = useSelector(selectError);
+
+  useEffect(() => {
+    if (user) {
+      return;
+    }
+    if (!user) {
+      navigation.navigate("LoginScreen");
+      console.log(user);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (!error) {
+      return;
+    }
+    alert(error);
+  }, [error]);
+
   return (
     <Tabs.Navigator
       initialRouteName="PostsScreen"
@@ -52,7 +77,11 @@ const BottomNavіgator = () => {
             color: "#212121",
           },
           headerRight: () => (
-            <Pressable onPress={() => navigation.navigate("LoginScreen")}>
+            <Pressable
+              onPress={() => {
+                dispatch(logOut());
+              }}
+            >
               <Ionicons name="exit-outline" size={25} color="#BDBDBD" />
             </Pressable>
           ),

@@ -16,7 +16,7 @@ const firebaseConfig = {
   databaseURL: "https://awesomeproject-95404.firebaseio.com",
   projectId: "awesomeproject-95404",
   storageBucket: "awesomeproject-95404.appspot.com",
-  messagingSenderId: "sender-id",
+  messagingSenderId: "665617758284",
   appId: "1:665617758284:android:c2a3ba8dea0b98daff1ce9",
   measurementId: "G-measurement-id",
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   TextInput,
@@ -15,10 +15,15 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import Background from "../images/background.jpg";
-import { register } from "../redux/auth/authOperations";
+import { refreshUser, register } from "../redux/auth/authOperations";
+import {
+  selectError,
+  selectIsLoggedIn,
+  selectUser,
+} from "../redux/auth/authSelectors";
 
 const photo = require("../images/photoProfile.jpg");
 
@@ -34,19 +39,44 @@ const RegistrationScreen = () => {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const user = useSelector(selectUser);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const error = useSelector(selectError);
 
   const onPressPhoto = () => {
     setPhotoProfile();
   };
 
   const handleSubmit = () => {
+    console.log(`login ${login}`);
     dispatch(register({ email, password }));
-    dispatch(refreshUser({ displayName: login, photoURL: photoProfile }));
     setLogin("");
     setEmail("");
     setPassword("");
-    navigation.navigate("BottomNavіgator");
   };
+
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+    if (user && isLoggedIn && !error) {
+      dispatch(
+        refreshUser({
+          displayName: login,
+          photoURL: "https://reactjs.org/logo-og.png",
+        })
+      );
+      console.log(`after updateProfile ${user}`);
+      navigation.navigate("BottomNavіgator");
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (!error) {
+      return;
+    }
+    alert(error);
+  }, [error]);
 
   return (
     <ImageBackground

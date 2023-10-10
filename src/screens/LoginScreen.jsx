@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   TextInput,
@@ -13,9 +13,17 @@ import {
   ImageBackground,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useDispatch } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
 import Background from "../images/background.jpg";
+import {
+  selectError,
+  selectIsLoggedIn,
+  selectUser,
+} from "../redux/auth/authSelectors";
+import { logIn } from "../redux/auth/authOperations";
+import { auth } from "../../config";
+import { onAuthStateChanged } from "firebase/auth";
+import { selectPosts } from "../redux/posts/postsSelectors";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -25,16 +33,40 @@ const LoginScreen = () => {
   const [isButtonPress, setIsButtonPress] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const dispatch = useDispatch();
-
   const navigation = useNavigation();
+  const user = useSelector(selectUser);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const error = useSelector(selectError);
+  const posts = useSelector(selectPosts);
 
   const handleSubmit = () => {
-    // console.log({ email, password });
     dispatch(logIn({ email, password }));
     setEmail("");
     setPassword("");
-    navigation.navigate("BottomNavіgator");
   };
+
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+    if (user && isLoggedIn && !error) {
+      navigation.navigate("BottomNavіgator");
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (!error) {
+      return;
+    }
+    alert(error);
+  }, [error]);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      console.log(`onAuthStateChanged ${user}`);
+    });
+    console.log(posts);
+  }, []);
 
   return (
     <ImageBackground

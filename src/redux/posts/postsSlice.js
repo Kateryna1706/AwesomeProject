@@ -46,7 +46,15 @@ const postsSlice = createSlice({
       .addCase(addPost.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = null;
-        state.items.push(action.payload);
+        const newPost = {
+          id: action.payload.id,
+          postPhoto: action.payload.data.postPhoto,
+          postTitle: action.payload.data.postTitle,
+          location: action.payload.data.location,
+          comments: action.payload.data.comments,
+          like: action.payload.data.like,
+        };
+        state.items.push(newPost);
       })
       .addCase(addPost.rejected, (state, action) => {
         handleRejected(state, action);
@@ -58,7 +66,7 @@ const postsSlice = createSlice({
         state.isLoading = false;
         state.error = null;
         const index = state.items.findIndex(
-          (contact) => contact.id === action.payload.id
+          (post) => post.id === action.payload.id
         );
         state.items.splice(index, 1);
       })
